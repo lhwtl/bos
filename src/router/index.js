@@ -10,7 +10,7 @@ import Home from '@/views/system/Home'
 import Home2 from '@/views/system/Home2'
 import Home3 from '@/views/system/Home3' */
 Vue.use(Router)
-//哈哈还
+//哈哈
 export default new Router({
  routes: [
    {

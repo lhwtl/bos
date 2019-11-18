@@ -8,7 +8,8 @@ import SystemColumn from '@/views/system/SystemColumn'
 import Home from '@/views/system/Home'
 /* import Home1 from wertyuixcvghj'@/views/system/Home1'
 import Home2 from '@/views/system/Home2'
-import Home3 from '@/views/system/Home3' */
+import Home3 from '@/views/system/Home3'
+ ；啦啦啦啦啦啦*/
 Vue.use(Router)
 
 export default new Router({

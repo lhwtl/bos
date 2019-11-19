@@ -5,33 +5,32 @@ import Login from '@/components/Login'
 import resign from '@/components/resign'
 import Main from '@/components/Main'
 import SystemColumn from '@/views/system/SystemColumn'
+import SystemStaff from '@/views/system/SystemStaff'
 import Home from '@/views/system/Home'
-/* import Home1 from wertyuixcvghj'@/views/system/Home1'
-import Home2 from '@/views/system/Home2'
-import Home3 from '@/views/system/Home3' */
+
 Vue.use(Router)
 //哈哈
 export default new Router({
  routes: [
    {
+     /*登录*/
      path: '/',
      name: 'Login',
      component: Login
    },
+   /* 注册没用页面*/
    {path:'/resign',name:'resign',component:resign},
-   {
+   {/*首页*/
      path:'/Main',name:'Main',component:Main,
-
+    /*首页下的字页面*/
      children:[
+       /*首页显示*/
+        {path: '/Home', name: 'Home', component: Home},
+       /*系统管理 *//*栏目管理lx*/
         {path:'/system/SystemColumn',name:'SystemColumn',component:SystemColumn},
-        {
-            path: '/Home',
-            name: 'Home',
-            component: Home
-       },
-/*      {path:'/system/Home1',name:'Home1',component:Home1},
-       {path:'/system/Home2',name:'Home2',component:Home2},
-       {path:'/system/Home3',name:'Home3',component:Home3}, */
+         /*系统管理 *//*员工管理lx*/
+        {path:'/system/SystemStaff',name:'SystemStaff',component:SystemStaff},
+
      ]
    }
  ],

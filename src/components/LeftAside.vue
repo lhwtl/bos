@@ -3,7 +3,7 @@
     active-text-color="#ffd04b" :collapse="ifTfs">
     <!-- <el-menu default-active="2" :collapse="collapsed" collapse-transition router :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#334157" text-color="#fff" active-text-color="#ffd04b"> -->
     <div class="logobox">
-      <img class="logoimg" src="../assets/img/logo.png" alt="">
+      <img class="logoimg" src="../assets/img/ll.png" alt="">
     </div>
     <el-submenu v-for="d in datamm.syMenus"   :index="'index'+d.id" :key="'key'+d.id">
         <template slot="title" ><!-- v-if="d.Parentid=='-1'" --><!-- v-if="d.type='功能模块'" -->

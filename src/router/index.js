@@ -11,7 +11,7 @@ import Home2 from '@/views/system/Home2'
 import Home3 from '@/views/system/Home3'
  ；啦啦啦啦啦啦 1*/
 Vue.use(Router)
-
+//哈哈
 export default new Router({
  routes: [
    {

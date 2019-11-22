@@ -6,6 +6,15 @@ import 'element-ui/lib/theme-chalk/index.css' //新添加2，避免后期打包�
 import App from './App'
 import router from './router'
 
+import global_ from './components/Login'//引用文件
+//import global_ from './components/Global'//引用文件
+Vue.prototype.GLOBAL = global_//挂载到Vue实例上面复制代码
+import VueSession from 'vue-session'
+Vue.use(VueSession)
+
+
+
+
 //process.env.MOCK && require('@/mock')  //测试模式
 
 Vue.use(ElementUI)   //新添加3添加Element-UI

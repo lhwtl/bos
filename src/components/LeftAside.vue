@@ -38,12 +38,20 @@
 
     },
     mounted() {
-       console.log("xxx");
       console.log(this.$listeners);
+
       this.$bus.$on("my", data => {//传值过来
         console.log(data);
+        /* 接收赋值*/
         this.datamm=data;
       });
+
+    /* this.$bus.$on("ss", data => {//传值过来
+        //传值下去
+        this.$nextTick(()=>{
+          this.$bus.$emit('empgh',data);
+        });
+      }); */
        this.$router.push({
               path: '/Home'
             })

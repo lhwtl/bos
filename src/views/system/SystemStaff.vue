@@ -220,7 +220,7 @@
       },
       /* 删除 */
       handleDelete: function(row) {
-        alert(row.id);
+        //alert(row.id);
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -232,6 +232,7 @@
           }
           axios.post(url, qs.stringify(pages)).then(resp => {
             console.log(resp)
+            this.query();
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -327,7 +328,8 @@
       },
       /* 点击分页查询  页数 */
       change: function(r) {
-        alert(r)
+        this.pag=r;
+        this.query();
       },
       //初始化分页查询   封装方法方便全局调用
       query: function() {

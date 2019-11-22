@@ -14,22 +14,29 @@
   </el-form>
 </template>
 <script>
+
   import axios from 'axios'
   import qs from 'qs'
   var _this={};
+
   export default {
+    //TOemp:'大海s',
     name: 'Login',
     data() {
       return {
         empno: "TO1001",
-        pwd: "123"
+        pwd: "123",
+
       }
     },
+
     beforeCreate(){
       _this=this;
     },
     methods: {
       submitForm: function() {
+      this.$session.set("key",this.empno);
+
         let params = {
           empno: this.empno,
           pwd: this.pwd
@@ -42,17 +49,20 @@
             var str = qs.stringify(params);
             console.log(str);
            axios.post(url,str).then(response => {
-                     console.log(1111);
-                  console.log(response.data);
                    if(response.data!=null){
                     this.$router.push({
                       path:'/Main'
                     }),
                     this.$nextTick(()=>{
-                      console.log(1);
-                      console.log(response.data);
-                      this.$bus.$emit("my",response.data);
+                      this.$bus.$emit('my',response.data);
+                      console.log(response.data)
                     });
+                    /* 传值下去*/
+                  /*  this.$nextTick(()=>{
+                       this.$bus.$emit('ss',this.empno);
+                     });
+ */
+
                    }else{
                       this.$message({
                             showClose: true,
@@ -68,6 +78,7 @@
       }
     }
   }
+     const empTOs=this.empno;
 </script>
 
 <style>

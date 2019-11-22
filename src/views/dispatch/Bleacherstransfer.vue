@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item label="来电电话">
-        <el-input v-model="telephone" placeholder="请输入来电电话" style="width: 150px;"></el-input>
+        <el-input v-model="telphone" placeholder="请输入来电电话" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="通知单号">
         <el-input v-model="businessnoticeno" placeholder="请输入通知单号" style="width: 150px;"></el-input>
@@ -17,22 +17,21 @@
         <el-button @click="resetForm('ruleForm')">重置</el-button>
         <el-button @click="moreGet">更多</el-button>
       </el-form-item>
+      <br />
+      <el-form-item label="工单日期" v-show="ok">
+        <el-input v-model="workgenerationtime"  placeholder="请输入工单日期" style="width: 150px;"></el-input>
+      </el-form-item>
+      <el-form-item label="员工工号" v-show="ok">
+        <el-input v-model="empno" placeholder="请输入员工工号" style="width: 150px;"></el-input>
+      </el-form-item>
+      <el-form-item label="短信序号" v-show="ok">
+        <el-input v-model="shortmessageint" placeholder="请输入短信序号" style="width: 150px;"></el-input>
+      </el-form-item>
+      <el-form-item label="查台密码" v-show="ok">
+        <el-input v-model="querypwd" placeholder="请输入查台密码" style="width: 150px;"></el-input>
+      </el-form-item>
     </el-form>
-    <el-form :inline="true" :hidden="hidden" :model="formInline" class="demo-form-inline">
-      <el-form-item label="工单日期">
-        <el-input v-model="ww" placeholder="请输入工单日期" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item label="员工工号">
-        <el-input v-model="ss" placeholder="请输入员工工号" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item label="短信序号">
-        <el-input v-model="qq" placeholder="请输入短信序号" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item label="查台密码">
-        <el-input v-model="cc" placeholder="请输入查台密码" style="width: 150px;"></el-input>
-      </el-form-item>
 
-    </el-form>
     <el-row style="text-align: left;;">
       <el-button type="primary" @click="dialogFormVisible = true">转单</el-button>
       <el-button type="info">重发</el-button>
@@ -59,20 +58,18 @@
 
 
 
-
     <el-table :data="result" border style="width: 100%">
-
       <el-table-column type="selection" width="80">
       </el-table-column>
       <el-table-column prop="id" label="序号" width="80">
       </el-table-column>
-      <el-table-column prop="accWorkorders[0].jobno" label="工单号" width="100">
+      <el-table-column prop="accWorkorder.jobno" label="工单号" width="100">
       </el-table-column>
-      <el-table-column prop="accWorkorders[0].shortmessageint" label="短信序号" width="100">
+      <el-table-column prop="accWorkorder.shortmessageint" label="短信序号" width="100">
       </el-table-column>
       <el-table-column prop="businessnoticeno" label="业务通知单号" width="100">
       </el-table-column>
-      <el-table-column prop="accWorkorders[0].workgenerationtime" label="工单生成时间" width="100">
+      <el-table-column prop="accWorkorder.workgenerationtimes" label="工单生成时间" width="100">
       </el-table-column>
       <el-table-column prop="pickupaddress" label="收件地址" width="100">
       </el-table-column>
@@ -80,15 +77,13 @@
       </el-table-column>
       <el-table-column prop="telphone" label="联系电话" width="100">
       </el-table-column>
-      <el-table-column prop="accWorkorders[0].aftersinglenum" label="追单次数" width="100">
+      <el-table-column prop="accWorkorder.aftersinglenum" label="追单次数" width="100">
       </el-table-column>
-      <el-table-column prop="accWorkorders[0].pickupunit" label="处理单位" width="100">
+      <el-table-column prop="syUnits.name" label="处理单位" width="100">
       </el-table-column>
     </el-table>
-<el-pagination background @current-change="change" @size-change="SizeChange" layout="prev, pager, next"
-      :current-pag="size" :total="total">
-      <!-- 行 page-size-->
-      <!-- 页 current-pag-->
+<el-pagination  background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pages"
+      :page-sizes="[1,3,5,8]" :page-size="rows" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
 
   </div>
@@ -102,8 +97,12 @@
     data: function() {
       return {
         result: [],
-        telephone: '',
+        telphone: '',
         businessnoticeno: '',
+        workgenerationtime:'',
+        empno:'',
+        shortmessageint:'',
+        querypwd:'',
         formInline: '',
         hidden: true,
         form: {
@@ -113,15 +112,12 @@
         },
         dialogFormVisible: false,
         total:10,
-        size:5,
+        pages:1,
+        rows:5,
         radio:3,
-        ww:'',
-        ss:'',
-        qq:'',
-        zrmb:'',
-        cc:'',
         formLabelWidth:'',
-        model:''
+        model:'',
+        ok:false
 
       }
     },
@@ -129,53 +125,100 @@
       handleClick: function() { /* 查看详情 */
 
       },
+      moreGet:function(){
+          this.ok=!this.ok;
+      },
       onSubmit: function() {
-        /* console.log("进来了")
-           let tel={
-             telephone:this.telephone,
-             businessnoticeno:this.businessnoticeno
-           }
-           var str=qs.stringify(tel);
-           let url = "http://localhost/wuliuxm/selectHlpAccBusinessadmissibilityByteleAndbusi"
-           axios.post(url, str).then(response => {
-             console.log("_______________");
-             console.log(response.data)
-             this.result = response.data;
-             console.log(this.result.accWorkorders);
-           }).catch(error => {
-             console.log('erro')
-           }); */
+        let fy={
+           pages:this.pages,
+           rows:this.rows,
+           telphone:this.telphone,
+           businessnoticeno:this.businessnoticeno
+         }
+        var str= qs.stringify(fy);
+        let url = "http://localhost/wuliuxm/selectHlpAccBusinessadmissibility"
+        axios.post(url, str).then(response => {
+          console.log(response);
+          console.log(response.data)
+          this.result = response.data.rows;
+          this.total=response.data.total;
+          console.log("--------------------")
+          console.log(response.data.total)
+         // console.log(response.data.accWorkorders);
+        }).catch(error => {
+          console.log('erro')
+        });
+
       },
       resetForm: function(formName) {
         this.$refs[formName].resetFields();
       },
-      moreGet: function() {
-        return this.hidden = !this.hidden;
-        console.log(this.hidden);
-      },
-      SizeChange:function(){
+      handleCurrentChange:function(pages){
+             this.pages=pages;
+             let fy={
+                pages:this.pages,
+                rows:this.rows,
+                telphone:this.telphone,
+                businessnoticeno:this.businessnoticeno
+              }
+             var str= qs.stringify(fy);
+             let url = "http://localhost/wuliuxm/selectHlpAccBusinessadmissibility"
+             axios.post(url, str).then(response => {
+               console.log(response);
+               console.log(response.data)
+               this.result = response.data.rows;
+               this.total=response.data.total;
+               console.log("--------------------")
+               console.log(response.data.total)
+              // console.log(response.data.accWorkorders);
+             }).catch(error => {
+               console.log('erro')
+               })
 
       },
-      change:function(){
+      handleSizeChange:function(rows){
+         this.rows=rows;
+         let fy={
+            pages:this.pages,
+            rows:this.rows,
+            telphone:this.telphone,
+            businessnoticeno:this.businessnoticeno
+          }
+         var str= qs.stringify(fy);
+         let url = "http://localhost/wuliuxm/selectHlpAccBusinessadmissibility"
+         axios.post(url, str).then(response => {
+           console.log(response);
+           console.log(response.data)
+           this.result = response.data.rows;
+           this.total=response.data.total;
+           console.log("--------------------")
+           console.log(response.data.total)
+          // console.log(response.data.accWorkorders);
+         }).catch(error => {
+           console.log('erro')
+         });
 
       }
 
     },
     //钩子函数
     created: function() {
-
+       let fy={
+         pages:this.pages,
+         rows:this.rows,
+         telphone:this.telphone,
+         businessnoticeno:this.businessnoticeno
+       }
+      var str= qs.stringify(fy);
       let url = "http://localhost/wuliuxm/selectHlpAccBusinessadmissibility"
-      axios.post(url, null).then(response => {
+      axios.post(url, str).then(response => {
         console.log(response);
         console.log(response.data)
-        this.result = response.data;
-
-        var arr1 = [];
-        this.result.forEach(function(v) {
-          arr1.push(v.accWorkorders);
-        });
-        this.result.accWorkorders = arr1;
-        console.log(this.result.accWorkorders);
+        this.result = response.data.rows;
+        this.total=response.data.total;
+        console.log("--------------------")
+        console.log(response.data.total)
+       // console.log(response.data.accWorkorders);
       }).catch(error => {
         console.log('erro')
       });

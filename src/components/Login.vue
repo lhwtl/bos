@@ -1,15 +1,16 @@
 <template>
 
   <el-form class="login-container" >
-    <h2>表单登录测试</h2>
+
+  <h2 align="center">物流管理系统</h2>
     <el-form-item label="用户名" prop="pass">
       <el-input type="text" v-model="empno" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="密码" prop="checkPass">
+    <el-form-item label="密码" procenterp="checkPass">
       <el-input type="password" v-model="pwd" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" :plain="true" style="width: 100%;" @click="submitForm()">提交</el-button>
+      <el-button type="primary" :plain="true" style="width: 100%;" @click="submitForm()">登录</el-button>
     </el-form-item>
   </el-form>
 </template>

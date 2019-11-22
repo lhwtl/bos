@@ -8,6 +8,10 @@ import SystemColumn from '@/views/system/SystemColumn'
 import Home from '@/views/system/Home'
 import Bleacherstransfer from '@/views/dispatch/Bleacherstransfer'
 import Manualscheduling from '@/views/dispatch/Manualscheduling'
+import Signinandinput from '@/views/dispatch/Signinandinput'
+import Cancelsigninapplication from '@/views/dispatch/Cancelsigninapplication'
+
+
 
 /* import Home1 from wertyuixcvghj'@/views/system/Home1'
 import Home2 from '@/views/system/Home2'
@@ -42,7 +46,20 @@ export default new Router({
             path: '/dispatch/Manualscheduling',
             name: 'Manualscheduling',
             component: Manualscheduling
+       },
+       {
+            path: '/dispatch/Signinandinput',
+            name: 'Signinandinput',
+            component: Signinandinput
+       },
+       {
+            path: '/dispatch/Cancelsigninapplication',
+            name: 'Cancelsigninapplication',
+            component: Cancelsigninapplication
        }
+
+
+
 /*      {path:'/system/Home1',name:'Home1',component:Home1},
        {path:'/system/Home2',name:'Home2',component:Home2},
        {path:'/system/Home3',name:'Home3',component:Home3}, */

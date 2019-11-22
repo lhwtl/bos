@@ -1,0 +1,87 @@
+<template>
+  <div class="divClass">
+    <!--面包屑-->
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/Home' }">基础数据</el-breadcrumb-item>
+      <el-breadcrumb-item><a>收派管理</a></el-breadcrumb-item>
+    </el-breadcrumb>
+    <!--搜索框-->
+    <el-form :inline="true" class="demo-form-inline" style="margin-top: 10px;">
+      <el-form-item label="收派标准名称:">
+        <el-input v-model="bookname" placeholder="请输入收派标准名称"></el-input>
+      </el-form-item>
+      <el-form-item label="作废标注:">
+         <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-plus" @click="onadd">添加</el-button>
+      </el-form-item>
+    </el-form>
+  <!--数据表格-->
+   <el-table :data="result" style="width: 100%;" :border="true" max-height="550">
+     <el-table-column prop="id" label="序号" min-width="30" align="center"></el-table-column>
+     <el-table-column prop="name" label="收派标准名称" min-width="80"></el-table-column>
+     <el-table-column prop="minweight" label="最小重量" min-width="60"></el-table-column>
+     <el-table-column prop="maxweight" label="最大重量" min-width="60"></el-table-column>
+     <el-table-column prop="syEmps.empname" label="操作人员" min-width="50"></el-table-column>
+     <el-table-column prop="syUnitss.name" label="操作单位" min-width="70"></el-table-column>
+     <el-table-column prop="time" label="操作时间" min-width="80"></el-table-column>
+          <el-table-column label="操作">
+             <template slot-scope="scope">
+               <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+               <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+             </template>
+           </el-table-column>
+   </el-table>
+  </div>
+</template>
+
+<script>
+  import axios from 'axios'
+  export default {
+  name:"PickAStandard",
+  data:function(){
+    return{
+    result:[ ],
+     options: [{
+              value: '选项1',
+              label: '是'
+            }, {
+              value: '选项2',
+              label: '否'
+            }]
+    }
+
+  },
+  created:function(){
+    /* var str1 = qs.stringify(pages); */
+    let url = 'http://localhost/wuliuxm/select_BasDeliverystandard';
+    axios.post(url, null).then(resp => {
+      console.log(resp)
+      this.result = resp.data;
+    }).catch(error => {
+      console.log(error);
+    });
+
+  }
+}
+
+</script>
+
+<style>
+  .divClass {
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+</style>

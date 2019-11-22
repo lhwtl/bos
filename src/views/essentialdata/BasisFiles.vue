@@ -41,7 +41,6 @@
 </template>
 
 <script>
-  /* import { formatDate } from '@/common/date.js' */ // 在组件中引用date.js
   import axios from 'axios'
   export default {
   name:"BasisFiles",
@@ -71,32 +70,6 @@
       console.log(error);
     });
 
-  },
-  filters: {
-   /*
-    时间格式自定义 只需把字符串里面的改成自己所需的格式
-   */
-   /* formatDate(time) {
-     time=time.replace("T","");
-    var date = new Date(time);
-    return formatDate(date, 'yyyy年MM月dd日 hh:mm:ss');
-   } */
-
-         formatDate: function (value) {
-           let date = new Date(value);
-           let y = date.getFullYear();
-           let MM = date.getMonth() + 1;
-           MM = MM < 10 ? ('0' + MM) : MM;
-           let d = date.getDate();
-           d = d < 10 ? ('0' + d) : d;
-           let h = date.getHours();
-           h = h < 10 ? ('0' + h) : h;
-           let m = date.getMinutes();
-           m = m < 10 ? ('0' + m) : m;
-           let s = date.getSeconds();
-           s = s < 10 ? ('0' + s) : s;
-           return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
-         }
   }
 }
 

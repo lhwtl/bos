@@ -36,7 +36,7 @@
      <el-table-column prop="maxweight" label="最大重量" min-width="60"></el-table-column>
      <el-table-column prop="syEmps.empname" label="操作人员" min-width="50"></el-table-column>
      <el-table-column prop="syUnitss.name" label="操作单位" min-width="70"></el-table-column>
-     <el-table-column prop="operationtime | formatDate" label="操作时间" min-width="80">{{operationtime | formatDate}}</el-table-column>
+     <el-table-column prop="time" label="操作时间" min-width="80"></el-table-column>
           <el-table-column label="操作">
              <template slot-scope="scope">
                <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
@@ -48,7 +48,6 @@
 </template>
 
 <script>
-  /* import { formatDate } from '@/common/date.js' */ // 在组件中引用date.js
   import axios from 'axios'
   export default {
   name:"PickAStandard",
@@ -75,32 +74,6 @@
       console.log(error);
     });
 
-  },
-  filters: {
-   /*
-    时间格式自定义 只需把字符串里面的改成自己所需的格式
-   */
-   /* formatDate(time) {
-     time=time.replace("T","");
-    var date = new Date(time);
-    return formatDate(date, 'yyyy年MM月dd日 hh:mm:ss');
-   } */
-
-         formatDate: function (value) {
-           let date = new Date(value);
-           let y = date.getFullYear();
-           let MM = date.getMonth() + 1;
-           MM = MM < 10 ? ('0' + MM) : MM;
-           let d = date.getDate();
-           d = d < 10 ? ('0' + d) : d;
-           let h = date.getHours();
-           h = h < 10 ? ('0' + h) : h;
-           let m = date.getMinutes();
-           m = m < 10 ? ('0' + m) : m;
-           let s = date.getSeconds();
-           s = s < 10 ? ('0' + s) : s;
-           return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
-         }
   }
 }
 

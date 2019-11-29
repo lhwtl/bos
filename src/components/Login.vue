@@ -67,6 +67,7 @@
                       this.$bus.$emit('my',response.data);
                       console.log(response.data)
                     });
+                    this.$cookies.set("gxr",this.empno);
                     /* 传值下去*/
                   /*  this.$nextTick(()=>{
                        this.$bus.$emit('ss',this.empno);

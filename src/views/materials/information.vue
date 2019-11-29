@@ -3,7 +3,7 @@
     <!--面包屑-->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a>入库管理</a></el-breadcrumb-item>
+      <el-breadcrumb-item><a>包装材料录入</a></el-breadcrumb-item>
     </el-breadcrumb>
     <!--搜索框-->
 
@@ -395,8 +395,8 @@
                  transport:this.columnForm.transport,
                  subordinateunit:this.columnForm.subordinateunit,
                  drawerno:this.columnForm.drawerno,
-								 drawername:this.columnForm.drawername,
-								 remark:this.columnForm.remark
+				 drawername:this.columnForm.drawername,
+				 remark:this.columnForm.remark
                 }
                 console.log(url)
             axios.post(url, qs.stringify(pages)).then(resp => {

@@ -35,6 +35,16 @@
     },
     methods: {
       submitForm: function() {
+              let pagess = {
+                    empno:this.empno,
+                 }
+                 let urls = 'http://localhost/wuliuxm/FillAllSyEmpEmpToLx';
+                 axios.post(urls,qs.stringify(pagess)).then(resp => {
+                     console.log("xxtop"+resp.data);
+                   this.$session.set("emplist",resp.data);/* 传登录对象session */
+                   }).catch(error => {
+                     console.log(error);
+                   });
       this.$session.set("key",this.empno);
 
         let params = {

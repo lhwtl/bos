@@ -3,7 +3,7 @@
     <!--面包屑-->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a>书本管理</a></el-breadcrumb-item>
+      <el-breadcrumb-item><a>包装材料管理</a></el-breadcrumb-item>
     </el-breadcrumb>
     <!--搜索框-->
 
@@ -107,14 +107,15 @@
       /* 书本查询方法 */
 	  /* 查询之后数据分页 */
       onSubmit: function() { 
-		  alert("jl;l")
+		 
       let pages = {
-        column:this.column,
-		columnName:this.columnName
+        itemcode:this.column,
+		itemname:this.columnName
       }
       let urll = 'http://localhost/wuliuxm/selectPacPackagingname';
       axios.post(urll, qs.stringify(pages)).then(resp => {
         console.log(resp.data);
+		this.result = resp.data;
       }).catch(error => {
         console.log(error);
       });
@@ -172,7 +173,7 @@
       },
       /* 添加方法 */
       add: function() {
-		  alert("hahahaa")
+		 
 		  
         this.title = "添加栏目"
         this.columnForm.itemcode= null;
@@ -186,7 +187,7 @@
       },
        /* //新增修改提交的方法 */
        doSubmit: function() {
-		   alert("xixix")
+		   
           this.$refs['columnForm'].validate((valid) => {
           console.log(valid);
           if (valid) {
@@ -238,7 +239,7 @@
    
 
     created: function() { 
-	  alert("lalala");
+	  
       this.query(); 
      
 

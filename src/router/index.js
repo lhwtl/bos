@@ -8,7 +8,13 @@ import SystemColumn from '@/views/system/SystemColumn'
 import Home from '@/views/system/Home'
 import Bleacherstransfer from '@/views/dispatch/Bleacherstransfer'
 import Manualscheduling from '@/views/dispatch/Manualscheduling'
-
+import instorage from '@/views/materials/instorage'
+import logistics from '@/views/materials/logistics'
+import Materialgoods from '@/views/materials/Materialgoods'
+import inventory from '@/views/materials/inventory'
+import information from '@/views/materials/information'
+import Warehouse from '@/views/materials/Warehouse'
+import Packagingquery from '@/views/materials/Packagingquery'
 /* import Home1 from wertyuixcvghj'@/views/system/Home1'
 import Home2 from '@/views/system/Home2'
 import Home3 from '@/views/system/Home3'
@@ -27,7 +33,14 @@ export default new Router({
      path:'/Main',name:'Main',component:Main,
 
      children:[
-        {path:'/system/SystemColumn',name:'SystemColumn',component:SystemColumn},
+        {path:'/materials/Materialgoods',name:'Materialgoods',component:Materialgoods},
+				{path:'/materials/instorage',name:'instorage',component:instorage},
+				{path:'/materials/logistics',name:'logistics',component:logistics},
+				{path:'/materials/inventory',name:'inventory',component:inventory},
+				{path:'/materials/information',name:'information',component:information},
+				{path:'/materials/Warehouse',name:'Warehouse',component:Warehouse},
+				{path:'/materials/Packagingquery',name:'Packagingquery',component:Packagingquery},
+				{path:'/system/SystemColumn',name:'SystemColumn',component:SystemColumn},
         {
             path: '/Home',
             name: 'Home',

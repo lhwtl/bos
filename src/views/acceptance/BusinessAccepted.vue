@@ -3,7 +3,7 @@
     <!--面包屑-->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/Home' }">基础数据</el-breadcrumb-item>
-      <el-breadcrumb-item><a>收派时间管理</a></el-breadcrumb-item>
+      <el-breadcrumb-item><a>管理定区</a></el-breadcrumb-item>
     </el-breadcrumb>
     <!--搜索框-->
     <el-form :inline="true" class="demo-form-inline" style="margin-top: 10px;">
@@ -27,21 +27,25 @@
     </el-form>
   <!--数据表格-->
    <el-table :data="result" style="width: 100%;" :border="true" max-height="550">
-     <el-table-column prop="id" label="序号" min-width="30" align="center"></el-table-column>
-     <el-table-column prop="timename" label="时间名称" min-width="80"></el-table-column>
-     <el-table-column prop="syUnits.name" label="所属单位" min-width="60"></el-table-column>
-     <el-table-column prop="workingtime1"  label="平时上班时间" min-width="60"></el-table-column>
-     <el-table-column prop="closingtime1" label="平时下班时间" min-width="50"></el-table-column>
-     <el-table-column prop="saturdayworkingtime1" label="周六上班时间" min-width="70"></el-table-column>
-     <el-table-column prop="saturdayclosingtime1" label="周六下班时间" min-width="80"></el-table-column>
-     <el-table-column prop="sundayworkingtime1" label="周如上班时间" min-width="50"></el-table-column>
-     <el-table-column prop="sundayclosingtime1" label="周如下班时间" min-width="70"></el-table-column>
-     <el-table-column label="操作">
-       <template slot-scope="scope">
-         <!-- <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button> -->
-         <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
-       </template>
+     <el-table-column prop="id" label="序号" min-width="20" align="center"></el-table-column>
+     <el-table-column prop="businessnoticeno" label="业务通知单号" min-width="40"></el-table-column>
+     <el-table-column prop="customcode" label="客户编号" min-width="40"></el-table-column>
+     <el-table-column prop="customname"  label="客户名称" min-width="30"></el-table-column>
+     <el-table-column prop="linkman" label="联系人" min-width="30"></el-table-column>
+     <el-table-column prop="telphone" label="电话" min-width="60"></el-table-column>
+     <el-table-column prop="pickupaddress" label="取件地址" min-width="60"></el-table-column>
+     <el-table-column prop="arrivecity" label="取件城市" min-width="30"></el-table-column>
+     <el-table-column prop="sendaddress"  label="到达城市" min-width="30"></el-table-column>
+     <el-table-column prop="importanthints" label="产品" min-width="40"></el-table-column>
+     <el-table-column prop="reservationtimes" label="预约取件时间" min-width="70"></el-table-column>
+     <el-table-column>
+       <el-table-column label="操作" min-width="50">
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="handleDelete(scope.row)" min-width="20">删除</el-button>
+          </template>
+        </el-table-column>
      </el-table-column>
+
    </el-table>
   </div>
 </template>
@@ -49,7 +53,7 @@
 <script>
   import axios from 'axios'
     export default {
-    name:"DispatchTime",
+    name:"BusinessAccepted",
       data:function(){
        return{
        result:[],
@@ -59,24 +63,25 @@
       },
       methods:{
         query:function(){
-          let url = 'http://localhost/wuliuxm/select_BasStandartime';
+          let url = 'http://localhost/wuliuxm/select_AccBusinessadmissibility';
           axios.post(url, null).then(resp => {
             console.log(resp)
             this.result = resp.data;
           }).catch(error => {
             console.log(error);
           });
+
         },
         /* 删除 */
         handleDelete: function(row) {
          // alert(row.id);
-        
+
           this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            let url = 'http://localhost/wuliuxm/delete_BasStandartime';
+            let url = 'http://localhost/wuliuxm/delete_BasZoneinfo';
             let pages = {
               id: row.id,
             }

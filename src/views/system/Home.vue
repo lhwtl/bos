@@ -33,7 +33,7 @@
           axios.post(url, null).then(resps => {
             console.log("abc" + resps)
             console.log(resps.data)
-            this.qxtext = resps.data;
+            //this.qxtext = resps.data;
           }).catch(error => {
             console.log(error);
           });

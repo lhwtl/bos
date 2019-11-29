@@ -19,20 +19,23 @@
             <el-option value=0 label="否"></el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item> -->
+        <!-- <el-form-item>   el-icon-refresh-->
         <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
       </el-form-item>
-
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-refresh" @click="refresh">重置</el-button>
+          </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-plus" @click="add">新增</el-button>
       </el-form-item>
+
     </el-form>
     <!--数据表格-->
     <el-table :data="result" style="width: 100%;" :border="true" max-height="550">
       <el-table-column prop="id" label="序号" min-width="30" align="center"></el-table-column>
       <el-table-column prop="empno" label="编号" min-width="40"></el-table-column>
       <el-table-column prop="empname" label="用户名" min-width="50"></el-table-column>
-      <el-table-column prop="roleid"  label="角色"  min-width="70"></el-table-column>
+      <el-table-column prop="syRole.rolename"  label="角色"  min-width="70" ></el-table-column>
      <!-- <el-table-column prop="disabled"  label="状态"  min-width="70"></el-table-column> -->
      <el-table-column prop="disabled"  label="状态" min-width="70">
        <template slot-scope="scope1">
@@ -214,7 +217,13 @@
           });
         this.max();
       },
-
+      /* 重置按钮*/
+      refresh:function(){
+        this.empname=null;
+        this.disabled=null;
+        this.query();
+        this.max();
+      },
       colchange: function(r) {
 
       },
@@ -381,7 +390,7 @@
         console.log(error);
       });
       /* 公司*/
-     let url2 = 'http://localhost/wuliuxm/FillAllSyUnitsLx';
+     let url2 = 'http://localhost/wuliuxm/selectSyUnitsHlp';
       axios.post(url2, null).then(resps => {
         console.log("公司" + resps)
           this.gong = resps.data;

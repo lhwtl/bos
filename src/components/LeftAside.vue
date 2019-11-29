@@ -62,7 +62,7 @@
 <style>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 240px;
-    min-height: 400px;
+    min-height: 100%;
   }
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {

@@ -1,7 +1,7 @@
 <template>
 
   <el-form class="login-container" >
-    <h2>表单登录测试</h2>
+    <h2>物流管理系统</h2>
     <el-form-item label="用户名" prop="pass">
       <el-input type="text" v-model="empno" autocomplete="off"></el-input>
     </el-form-item>
@@ -35,7 +35,18 @@
     },
     methods: {
       submitForm: function() {
-      this.$session.set("key",this.empno);
+        let pagess = {
+            empno:this.empno,
+         }
+         let urls = 'http://localhost/wuliuxm/FillAllSyEmpEmpToLx';
+         axios.post(urls,qs.stringify(pagess)).then(resp => {
+             console.log("xxtop"+resp.data);
+           this.$session.set("emplistkey",resp.data);/* 传登录对象session */
+           }).catch(error => {
+             console.log(error);
+           });
+
+      this.$session.set("key",this.empno);/* 传登录账号 session */
 
         let params = {
           empno: this.empno,
@@ -49,6 +60,7 @@
             var str = qs.stringify(params);
             console.log(str);
            axios.post(url,str).then(response => {
+
                    if(response.data!=null){
                     this.$router.push({
                       path:'/Main'
@@ -57,21 +69,16 @@
                       this.$bus.$emit('my',response.data);
                       console.log(response.data)
                     });
-                    /* 传值下去*/
-                  /*  this.$nextTick(()=>{
-                       this.$bus.$emit('ss',this.empno);
-                     });
- */
 
                    }else{
                       this.$message({
-                            showClose: true,
-                            message: '账号密码错误',
-                            type: 'success'
-                          });
+                        type: 'info',
+                        message: '账号密码错误'
+                      });
                    }
                 }).catch(function (error) {
                   console.log(404);
+
                 });
 
 

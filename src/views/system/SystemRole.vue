@@ -22,7 +22,9 @@
         <!-- <el-form-item> -->
         <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
       </el-form-item>
-
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-refresh" @click="refresh">重置</el-button>
+          </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-plus" @click="add">新增</el-button>
       </el-form-item>
@@ -122,6 +124,8 @@
                 label: 'text'
             },
         qxtext:[],
+        listid:{},
+        qxid:null,
         titles:'权限管理',
         checkAll:false,
         isIndeterminate: true,
@@ -165,21 +169,43 @@
     methods: {
       /* 权限提交 */
       doSubmitqx:function(){
-        alert("提交");
+        /* 点击保存先删除权限 然后在重新添加勾选的权限*/
+        //alert(this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys()));
+        this.listid=this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys());
+        //alert( this.listid+"xx");
 
-        alert(this.$refs.tree.getCheckedKeys());
-        alert(this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys()));
-        //alert(this.$refs.menusTree.getHalfCheckedKeys());
+        let pages = {
+           qxlistid :this.listid,
+           roleid: this.qxid,
+         }  /* 删除deleteSyRolesmenusRoleidLx*/
+         let url1 = 'http://localhost/wuliuxm/deleteSyRolesmenusRoleidLx';
+         axios.post(url1, qs.stringify(pages)).then(resps => {
+           console.log("删除：" + resps)
+         }).catch(error => {
+           console.log(error);
+         });
+
+           /* 新增*/
+          console.log(" list    :"+   qs.stringify(this.listid))
+         let url = 'http://localhost/wuliuxm/insertyRolesmenusLx';
+         axios.post(url, qs.stringify(pages)).then(resps => {
+           console.log("新增：" + resps)
+         }).catch(error => {
+           console.log(error);
+         });
+
+
+
         this.dialogFormVisibleqx = false;
 
 
 
       },
       /* 权限框*/
-      handleqx:function(){
-
-         this.dialogFormVisibleqx = true;
-         this.$refs.tree.setCheckedKeys([]);
+      handleqx:function(r){
+          this.qxid=r.id;
+          this.dialogFormVisibleqx = true;
+          this.$refs.tree.setCheckedKeys([]);//第一次点击会报错不影响
       },
 
       /* 书本查询方法 */
@@ -188,7 +214,13 @@
           this.max();
 
       },
-
+ /* 重置按钮*/
+      refresh:function(){
+        this.rolename=null;
+        this.disabled=null;
+       this.query(); /* 调用 */
+       this.maxs();
+      },
       colchange: function(r) {
 
       },

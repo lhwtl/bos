@@ -21,7 +21,9 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
       </el-form-item>
-
+        <el-form-item>
+            <el-button type="primary" icon="el-icon-refresh" @click="refresh">重置</el-button>
+          </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-plus" @click="add">新增</el-button>
       </el-form-item>
@@ -29,16 +31,29 @@
     <!--数据表格-->
     <el-table :data="result" style="width: 100%;" :border="true" max-height="550">
       <el-table-column prop="id" label="序号" min-width="30" align="center"></el-table-column>
-      <el-table-column prop="parentid" label="编号" min-width="40"></el-table-column>
-      <el-table-column prop="" label="上级栏目" min-width="50"></el-table-column>
-      <el-table-column prop="type" label="栏目类型" min-width="70"></el-table-column>
-      <el-table-column prop="text" label="栏目名称" min-width="70"></el-table-column>
-      <el-table-column prop="url" label="栏目地址" min-width="70"></el-table-column>
+      <el-table-column prop="parentid" label="上级栏目" min-width="60">
+        <template slot-scope="scope1">
+          <div v-for="(p,index) in oneColumn" :key="index" >
+            <p v-if="scope1.row.parentid==p.id">{{p.text}}</p>
+          </div>
+          <p v-if="scope1.row.parentid=='0'">待分配上级编号</p>
+          <p v-if="scope1.row.parentid=='-1'">暂无上级编号</p>
+          <!-- <span v-if="scope1.row.parentid=='-1'">暂无上级编号</span>
+           <span v-if="scope1.row.parentid=='0'">待分配上级编号</span>
+           <span v-if="scope1.row.parentid!='-1' && scope1.row.parentid!='0'">{{scope1.row.parentid}}</span> -->
+
+         </template>
+      </el-table-column>
+      <!-- <el-table-column prop="parentid" label="上级栏目" min-width="50"></el-table-column> -->
+      <el-table-column prop="type" label="栏目类型" min-width="50"></el-table-column>
+      <el-table-column prop="text" label="栏目名称" min-width="60"></el-table-column>
+      <el-table-column prop="url" label="栏目地址" min-width="60"></el-table-column>
       <el-table-column prop="tip" label="栏目提示语" min-width="70"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" min-width="100">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="mini"  @click="handleupdate(scope.row)">栏目</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,6 +79,7 @@
             <el-option   value="0"  label="二级栏目"></el-option><!--  我不是这么写的右箭头写不出 如果parentid不等于负一就显示二级目录if判断 -->
           </el-select>
         </el-form-item>
+
         <el-form-item label="栏目名称" prop="text" :label-width="formLabelWidth">
           <el-input v-model="columnForm.text" autocomplete="off"></el-input>
         </el-form-item>
@@ -83,6 +99,31 @@
       </div>
     </el-dialog>
 
+    <!--  选择二级菜单显示 v-show="false">
+        <el-form-item label="请选择栏目" prop="column" :label-width="formLabelWidth" >
+          <el-select v-model="column"  placeholder="--请选择主栏目--"  @change="twochange" style="width: 100%;">
+            <el-alert value="--请选择主栏目--" label="--请选择主栏目--"></el-alert>
+            <el-option v-for="c1 in oneColumn"   :key="'key'+c1.id"  :value="c1.id"  :label="c1.text"   ></el-option>
+          </el-select>
+        </el-form-item>-->
+    <!--对话框-->
+    <el-dialog :title="title" :visible.sync="dialogFormVisibletwo" >
+      <el-form :model="columnForm" ref="columnFormtwo" :rules="rules">
+        <el-form-item label="编号" :label-width="formLabelWidth" v-show="false">
+          <el-input v-model="columnForm.id" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="请选择栏目" prop="parentid" :label-width="formLabelWidth" >
+          <el-select v-model="columnForm.parentid"  placeholder="--请选择主栏目--"  style="width: 100%;">
+            <el-alert value="--请选择主栏目--" label="--请选择主栏目--"></el-alert>
+            <el-option v-for="c1 in oneColumn"   :key="'key'+c1.id"  :value="c1.id"  :label="c1.text"   ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisibletwo = false">取 消</el-button>
+          <el-button type="primary" @click="doSubmittwo">确 定</el-button>
+        </div>
+      </el-dialog>
   </div>
 </template>
 
@@ -93,6 +134,7 @@
     name: 'SystemColumn',
     data: function() {
       return {
+        twoxs:false,
         column: null,
         columnName: null,
         result: [],
@@ -102,6 +144,7 @@
         size: 7, //条数
         pag: 1, //页数
         dialogFormVisible: false,
+        dialogFormVisibletwo:false,
         formLabelWidth: "120px",
         title: '添加栏目',
             columnForm:{
@@ -150,27 +193,74 @@
       }
     },
     methods: {
+      /* 二级栏目却修改*/
+    doSubmittwo:function(){
+      this.$refs['columnFormtwo'].validate((valid) => {
+        console.log(valid);
+        if (valid) {
+               var url = 'http://localhost/wuliuxm/updateSyMenusTwoLx';
+              let pages = {
+               id: this.columnForm.id,
+               parentid:this.columnForm.parentid,
+              }
+              console.log(url)
+          axios.post(url, qs.stringify(pages)).then(resp => {
+            console.log(resp)
+          this.dialogFormVisibletwo=false;
+          this.query();
+          }).catch(error => {
+            console.log("失败");
+          });
+        } else {
+          console.log('error submit!!提交失败');
+          return false;
+        }
+      });
+
+    },
+    handleupdate:function(r){
+      if(r.parentid=='-1'){
+        this.$message({
+          type: 'info',
+          message: '一级栏目不能修改'
+        });
+        return false;
+      }
+       this.columnForm.id= r.id;
+       this.columnForm.parentid=null;
+       this.dialogFormVisibletwo=true;
+    },
+
 
       /* 书本查询方法 */
       onSubmit: function() { /* 查询之后数据分页 */
-      this.column="--请选择主栏目--";
-      /* max3   模糊查询最大值赋值*/
-      let pages = {
-        column:this.columnName,
-      }
-      let urll = 'http://localhost/wuliuxm/MaxMenusLikeNameLX';
-      axios.post(urll, qs.stringify(pages)).then(resp => {
-        console.log(resp.data);
-        this.total = resp.data; /* 赋值最大值 */
-      }).catch(error => {
-        console.log(error);
-      });
+        this.column="--请选择主栏目--";
+        /* max3   模糊查询最大值赋值*/
+        let pages = {
+          column:this.columnName,
+        }
+        let urll = 'http://localhost/wuliuxm/MaxMenusLikeNameLX';
+        axios.post(urll, qs.stringify(pages)).then(resp => {
+          console.log(resp.data);
+          this.total = resp.data; /* 赋值最大值 */
+        }).catch(error => {
+          console.log(error);
+        });
 
-      /* 分页查*/
-      this.pag=1,
-      this.size=7;
-      this.query();
+
+        /* 分页查*/
+        this.pag=1,
+        this.size=7;
+        this.query();
       },
+      /* 重置按钮*/
+      refresh:function(){
+             this.column=null;
+             this.columnName=null;
+           this.query(); /* 调用 */
+           //max最大值
+          this.max();
+           },
       /* 下拉框值改变事件*/
       colchange:function(r){
 
@@ -215,6 +305,9 @@
                        type: 'success',
                        message: '删除成功!'
                      });
+                     this.query(); /* 调用 */
+                     //max最大值
+                     this.max();
                    }).catch(error => {
                      console.log("删除失败");
                      }).catch(() => {
@@ -280,7 +373,9 @@
             axios.post(url, qs.stringify(pages)).then(resp => {
               console.log(resp)
               this.dialogFormVisible = false;//隐藏
-              this.query();
+          this.query(); /* 调用 */
+           //max最大值
+          this.max();
             }).catch(error => {
               console.log("失败");
             });
@@ -337,6 +432,24 @@
         });
 
       },
+      max:function(){
+        let urll = 'http://localhost/wuliuxm/MaxSyMenus';
+        axios.post(urll, null).then(resp => {
+          console.log("max"+resp.data);
+          this.total = resp.data; /* 赋值最大值 */
+          console.log(this.total);
+        }).catch(error => {
+          console.log(error);
+        });
+        //一级栏目
+        let pathurl = 'http://localhost/wuliuxm/FillAllOneColumnSyMenus';
+          axios.post(pathurl, null).then(resp => {
+          console.log(resp.data);
+          this.oneColumn = resp.data; /* 赋值最大值 */
+        }).catch(error => {
+          console.log(error);
+        });
+      },
 
 
     },
@@ -346,22 +459,7 @@
       //初始化分页查询
       this.query(); /* 调用 */
       //max最大值
-      let urll = 'http://localhost/wuliuxm/MaxSyMenus';
-      axios.post(urll, null).then(resp => {
-        console.log("max"+resp.data);
-        this.total = resp.data; /* 赋值最大值 */
-        console.log(this.total);
-      }).catch(error => {
-        console.log(error);
-      });
-      //一级栏目
-      let pathurl = 'http://localhost/wuliuxm/FillAllOneColumnSyMenus';
-        axios.post(pathurl, null).then(resp => {
-        console.log(resp.data);
-        this.oneColumn = resp.data; /* 赋值最大值 */
-      }).catch(error => {
-        console.log(error);
-      });
+      this.max();
 
 
     }

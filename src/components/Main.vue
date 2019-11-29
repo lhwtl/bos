@@ -57,14 +57,14 @@
 	.main-aside-collapsed {
 		/* 在CSS中，通过对某一样式声明! important ，可以更改默认的CSS样式优先级规则，使该条样式属性声明具有最高优先级 */
 		width: 64px !important;
-		height: 600px;
+		height: 100%;
 		background-color: #334157;
 		margin: 0px;
 	}
 
 	.main-aside {
 		width: 240px !important;
-		height: 600px;
+		height: 100%;
 		background-color: #334157;
 		margin: 0px;
 	}

@@ -7,6 +7,8 @@ import App from './App'
 import router from './router'
 import VueCookies from 'vue-cookies'
 import VueSession from 'vue-session'
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 import global_ from './components/Login'//引用文件
 //import global_ from './components/Global'//引用文件
 Vue.prototype.GLOBAL = global_//挂载到Vue实例上面复制代码

@@ -2,7 +2,7 @@
   <div class="ktzd">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px;">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>调度</el-breadcrumb-item>
+      <el-breadcrumb-item>物流管理</el-breadcrumb-item>
       <el-breadcrumb-item>跟踪表查询</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :inline="true" class="demo-form-inline">
@@ -17,31 +17,7 @@
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
-    <!--转单的弹框 -->
-    <el-dialog title="分配" :visible.sync="dialogFormVisible" style="width: 500px;">
-      <el-form :model="form">
-        <el-form-item label="所属单位" :label-width="formLabelWidth">
-          <el-select v-model="processingunit" placeholder="请选择"">
-             <el-option
-               v-for=" item
-            in options" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分拣编码">
-          <el-select v-model="sortingcode" placeholder="请选择"">
-             <el-option
-               v-for=" item in
-            fjbm" :key="item.id" :label="item.sortingcode" :value="item.sortingcode">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
+   
     <!-- 表格 -->
     <el-table :data="result" border style="width: 100%">
       <el-table-column prop="id" label="序号" width="50">

@@ -2,7 +2,7 @@
   <div class="ktzd">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px;">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>调度</el-breadcrumb-item>
+      <el-breadcrumb-item>返货</el-breadcrumb-item>
       <el-breadcrumb-item>生成返货单</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :inline="true" class="demo-form-inline">
@@ -12,44 +12,9 @@
        <el-form-item label="开单时间">
          <el-input v-model="recordingtime" placeholder="请输入开单时间" style="width: 150px;"></el-input>
        </el-form-item>
+       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-        <el-button @click="moreGet">更多</el-button>
-      </el-form-item>
-      <br>
-      <el-form-item v-show="ok" label="异常时间">
-        <el-input v-model="recordingtime" placeholder="请输入异常时间" style="width: 150px;"></el-input>
-      </el-form-item>
-     <el-form-item v-show="ok"  label="状态">
-       <el-select  placeholder="请选择" style="width: 150px;">
-         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-         </el-option>
-       </el-select>
-     </el-form-item>
-     <el-form-item v-show="ok"  label="受理单位">
-       <el-select  placeholder="请选择" style="width: 150px;">
-         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-         </el-option>
-       </el-select>
-     </el-form-item>
-     <br />
-      <el-form-item v-show="ok"  label="返货单位">
-        <el-select  placeholder="请选择" style="width:150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok"  label="含下级">
-        <el-select placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item  v-show="ok" label="签收部门">
-        <el-select  placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
       </el-form-item>
     </el-form>
     <!-- 表格 -->

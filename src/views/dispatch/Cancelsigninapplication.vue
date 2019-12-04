@@ -15,42 +15,9 @@
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-        <el-button @click="moreGet">更多</el-button>
-      </el-form-item>
-      <br>
-
-      <el-form-item v-show="ok" label="原因">
-        <el-input v-model="ss" placeholder="请输入原因" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="异常备注">
-        <el-input v-model="ss" placeholder="请输入异常备注" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="异常单号">
-        <el-input v-model="ss" placeholder="请输入异常单号" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="申请人">
-        <el-input v-model="ss" placeholder="请输入申请人" style="width: 150px;"></el-input>
-      </el-form-item><br />
-      <el-form-item v-show="ok" label="申请时间">
-        <el-input v-model="ss" placeholder="请输入申请时间" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="申请单位">
-        <el-input v-model="ss" placeholder="请输入申请单位" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="含下级">
-        <el-select v-model="value" placeholder="请选择" style="width: 200px;">
-          <el-option v-for="item in istf" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok" label="审批状态">
-        <el-select v-model="value" placeholder="请选择" style="width: 200px;">
-          <el-option :key="1" :label="是" :value="1">
-          </el-option>
-        </el-select>
       </el-form-item>
     </el-form>
-    <el-button size="mini" type="success" style="margin-left: -1050px;" @click="handleadd">新增</el-button>
+
     <!-- 表格 -->
     <el-table :data="result" border style="width: 100%">
 
@@ -58,7 +25,7 @@
       </el-table-column>
       <el-table-column prop="id" label="序号" width="80">
       </el-table-column>
-      <el-table-column prop="disWorkordersign.worksheetno" label="工作单号" width="80">
+      <el-table-column prop="worksheetno" label="工作单号" width="80">
       </el-table-column>
       <el-table-column prop="applicationno" label="申请单号" width="80">
       </el-table-column>
@@ -76,9 +43,10 @@
       </el-table-column>
       <el-table-column label="操作" width="290">
         <template slot-scope="scope">
+           <el-button size="mini" type="success" @click="handleadd">新增</el-button>
           <el-button size="mini" type="success" @click="handleEdit(scope.row)">修改</el-button>
           <el-button size="mini" type="success" @click="handleDetail(scope.row)">详情</el-button>
-          <el-button size="mini" type="danger" @click="handledelete(scope.row)">作废</el-button>
+          <el-button size="mini" type="danger" @click="handleZf(scope.row)">作废</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -116,15 +84,11 @@
           <el-input v-model="CancelSigninand.entryunit" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="工作单号" prop="worksheetno" :label-width="formLabelWidth">
-          <el-select @change="selectget1" v-model="CancelSigninand.worksheetno" placeholder="请选择" style=" :  500px">
+          <el-select @change="selectget1" v-model="CancelSigninand.worksheetno" placeholder="请选择" style=" width: 500px">
             <el-option v-for="items in workorders" :key="items.worksheetno" :label="items.worksheetno" :value="items.worksheetno">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="申请单号" prop="applicationno" :label-width="formLabelWidth" v-show="false">
-          <el-input v-model="CancelSigninand.applicationno" autocomplete="off"></el-input>
-        </el-form-item>
-
         <el-form-item label="申请原因" prop="returntype" :label-width="formLabelWidth">
           <el-select v-model="CancelSigninand.returntype" placeholder="请选择" style="width: 500px">
             <el-option v-for="item in returntype" :key="item.id" :label="item.typename" :value="item.id">
@@ -146,7 +110,6 @@
         <el-form-item label="申请时间" prop="confirmationtime" :label-width="formLabelWidth">
           <el-date-picker  v-model="CancelSigninand.confirmationtime" type="datetime" placeholder="选择日期时间">
           </el-date-picker>
-         <!-- <el-input v-model="CancelSigninand.confirmationtime" autocomplete="off" style="width: 500px"></el-input> -->
         </el-form-item>
         <el-form-item label="确认单位" prop="confirmationunit" :label-width="formLabelWidth">
           <el-select v-model="CancelSigninand.confirmationunit" placeholder="请选择" style="width: 500px">
@@ -161,12 +124,9 @@
           </el-select>
           </el-input>
         </el-form-item>
-        <!--  v-text="byempgetemp.syUnits.name"-->
         <el-form-item label="确认时间" prop="confirmationtime" :label-width="formLabelWidth">
-            <!-- <span class="demonstration">默认</span> -->
             <el-date-picker  v-model="CancelSigninand.confirmationtime" type="datetime" placeholder="选择日期时间">
             </el-date-picker>
-        <!--  <el-input v-model="CancelSigninand.confirmationtime" autocomplete="off" style="width: 500px"></el-input> -->
         </el-form-item>
         <el-form-item label="确认状态" prop="identificationsign" :label-width="formLabelWidth">
           <template>
@@ -194,26 +154,15 @@
         result: [],
         recipient: '',
         worksheetno: '',
-        form: {
-          name: '',
-          region: ''
-
-        },
+        applicationno:'',
         dialogFormVisibledetail: false,
         dialogFormVisible: false,
         total: 10,
         pages: 1,
         rows: 5,
         radio: 3,
-        ww: '',
-        ss: '',
-        qq: '',
-        zrmb: '',
-        cc: '',
         options: [],
         ok: false,
-        fjbm: [],
-        sortingcode: '',
         RemoveApplication: {
           worksheetno: null,
           applicationno: null,
@@ -228,7 +177,6 @@
         CancelSigninand: {
           id: 0,
           worksheetno: null,
-          applicationno: null,
           returntype: null,
           confirmationunit: null,
           confirmationpersonname: null,
@@ -238,10 +186,29 @@
           entryunit:null
 
         },
+        rules:{
+          worksheetno:[
+            { required: true, message: '请选择工作单号', trigger: 'change'}
+          ],
+          returntype:[{
+             required: true, message: '请选择申请原因', trigger: 'change'
+          }],
+          confirmationunit:[{
+            required: true, message: '请选择申请单位或确认单位', trigger: 'change'
+          }],
+          confirmationpersonname:[{
+            required: true, message: '请选择申请人或确认人', trigger: 'change'
+          }],
+          confirmationtime:[{
+              required: true, message: '请选择申请时间或确认时间', trigger: 'change'
+            }
+          ]
+
+        },
         workorders: [],
         worktypes: [],
         inputperson: [],
-        id: '',
+        id: 0,
         sets: [],
         returntype: [{
             id: 1,
@@ -263,7 +230,7 @@
             typename: '破损'
 
           }
-        ]
+        ],
 
       }
     },
@@ -272,7 +239,9 @@
         let fy = {
           pages: this.pages,
           rows: this.rows,
-          worksheetno: this.worksheetno
+          worksheetno: this.worksheetno,
+          applicationno:this.applicationno,
+
         }
         var str = qs.stringify(fy);
         let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -296,7 +265,9 @@
         let fy = {
           pages: this.pages,
           rows: this.rows,
-          worksheetno: this.worksheetno
+          worksheetno: this.worksheetno,
+          applicationno:this.applicationno,
+
         }
         var str = qs.stringify(fy);
         let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -312,7 +283,9 @@
         let fy = {
           pages: this.pages,
           rows: this.rows,
-          worksheetno: this.worksheetno
+          worksheetno: this.worksheetno,
+          applicationno:this.applicationno,
+
         }
         var str = qs.stringify(fy);
         let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -343,45 +316,49 @@
           this.RemoveApplication.identificationsign = '是';
         }
       },
+      handleEdit:function(row) {
+        this.title = "修改";
+        this.dialogFormVisible = true;
+        this.CancelSigninand.id=row.id;
+        this.CancelSigninand.worksheetno=row.worksheetno;
+        this.CancelSigninand.returntype=row.returntype;
+        this.CancelSigninand.confirmationunit=row.confirmationunit;
+        this.CancelSigninand.confirmationpersonname=row.confirmationpersonname;
+        this.CancelSigninand.confirmationtime=row.confirmationtime;
+        this.CancelSigninand.identificationsign=row.identificationsign+'';
+        this.CancelSigninand.personname=row.personname;
+        this.CancelSigninand.entryunit=row.entryunit;
+
+      },
       handleadd: function() {
         this.title = "增加";
         this.dialogFormVisible = true;
         this.CancelSigninand.identificationsign='1';
         //根据empno查询
-        this.empno=this.$cookies.get("gxr");
+         this.empno=this.$session.get("key");
          let pages = {
            empno:this.empno
          }
-         alert(this.empno);
          let str1=qs.stringify(pages);
          let url5 = "http://localhost/wuliuxm/selectSyEmpByempnoHlp"
          axios.post(url5, str1).then(response => {
           this.CancelSigninand.entryunit=response.data.syUnits.id;
             this.CancelSigninand.personname=response.data.empname;
-            alert(this.CancelSigninand.entryunit+ this.CancelSigninand.personname+"录入人和录入单位")
 
          }).catch(error => {
            console.log('erro')
          });
       },
-      handleEdit: function() {
-        this.title = "修改";
-        this.dialogFormVisible = true;
-
-      },
-
       //新增与修改的提交方法
         addEditSubmit:function(){
           this.$refs['Signinand'].validate((valid) => {
             console.log(valid);
             if (valid) {
-              console.log("........");
               if (this.title=='增加') {
                    let url = 'http://localhost/wuliuxm/addRetReturnlistHlp';
                    let pages = {
                        id:this.CancelSigninand.id,
                        worksheetno: this.CancelSigninand.worksheetno,
-                       applicationno: this.CancelSigninand.applicationno,
                        returntype: this.CancelSigninand.returntype,
                        confirmationunit: this.CancelSigninand.confirmationunit,
                        confirmationpersonname: this.CancelSigninand.confirmationpersonname,
@@ -390,8 +367,6 @@
                        personname:this.CancelSigninand.personname,
                        entryunit:this.CancelSigninand.entryunit
                        }
-
-                       alert(url);
                        axios.post(url, qs.stringify(pages)).then(resp => {
                          console.log(resp)
                          this.dialogFormVisible = false; //隐藏
@@ -401,19 +376,17 @@
                        });
               }
              if(this.title=='修改'){
-               let url = 'http://localhost/wuliuxm/updateDisWorkordersignHlp';
-               alert(url);
+               let url = 'http://localhost/wuliuxm/updateRetReturnlistHlp';
                let pages = {
-                     id:this.Signinand.id,
-                     worksheetno:this.Signinand.worksheetno,
-                     workorderid:this.Signinand.workorderid,
-                     workordertype:this.Signinand.workordertype,
-                     signtype:this.Signinand.signtype,
-                     recipient:this.Signinand.recipient,
-                     courierint:this.Signinand.courierint,
-                     couriername:this.Signinand.couriername,
-                     inputpersonid:this.Signinand.inputpersonid,
-                     inputid:this.Signinand.inputid,
+                     id:this.CancelSigninand.id,
+                     worksheetno: this.CancelSigninand.worksheetno,
+                     returntype: this.CancelSigninand.returntype,
+                     confirmationunit: this.CancelSigninand.confirmationunit,
+                     confirmationpersonname: this.CancelSigninand.confirmationpersonname,
+                     confirmationtime: this.CancelSigninand.confirmationtime,
+                     identificationsign: this.CancelSigninand.identificationsign,
+                     personname:this.CancelSigninand.personname,
+                     entryunit:this.CancelSigninand.entryunit
 
                    }
                    console.log(url)
@@ -435,13 +408,11 @@
       },
 
       selectGet: function(ids) {
-        alert("jajaj")
         let obj = {};
         obj = this.worktypes.find((items) => { //这里的selectList就是上面遍历的数据源
           return items.id === ids; //筛选出匹配数据
         });
         this.id = ids;
-        alert(this.id);
         let param = {
           id: this.id
         }
@@ -453,13 +424,8 @@
             console.log(resp)
             for (let i = 0; i < resp.data.length; i++) {
               sets = resp.data[i].syEmps;
-              alert(sets + "幼稚了")
             }
             this.inputperson = sets;
-            alert(this.inputperson + "----------")
-            // var ste=qs.stringify(sets);
-            // this.inputperson=ste;
-            alert("转化" + this.inputperson);
 
           }
 
@@ -467,6 +433,21 @@
           console.log("失败");
         });
 
+
+      },
+      handleZf:function(rows){
+        this.id=rows.disWorkordersign.id;
+
+        let fy = {
+         id:this.id
+        }
+        var str = qs.stringify(fy);
+        let url = "http://localhost/wuliuxm/updateDisWorkordersignZfHlp"
+        axios.post(url, str).then(response => {
+          this.onSubmit();
+        }).catch(error => {
+          console.log('erro')
+        });
 
       }
     },
@@ -476,7 +457,9 @@
       let fy = {
         pages: this.pages,
         rows: this.rows,
-        worksheetno: this.worksheetno
+        worksheetno: this.worksheetno,
+        applicationno:this.applicationno
+
       }
       var str = qs.stringify(fy);
       let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"

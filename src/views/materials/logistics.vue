@@ -22,9 +22,12 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-plus" @click="add">新增</el-button>
       </el-form-item>
+	  <div class="export">
+	       <el-button @click="exportExcel" style="margin-top: 2px;" size="medium" type="success">导出</el-button>
+	  </div>
     </el-form>
     <!--数据表格-->
-    <el-table :data="result" style="width: 100%;" :border="true" max-height="550">
+    <el-table :data="result" style="width: 100%;" :border="true" max-height="550" id="logis">
       <el-table-column prop="id" label="序号" min-width="30" align="center"></el-table-column>
       <el-table-column prop="worksheetno" label="工作单号" min-width="40"></el-table-column>
       <el-table-column prop="corporation" label="代理公司" min-width="50"></el-table-column>
@@ -54,7 +57,15 @@
 		  <el-input v-model="columnForm.worksheetno" autocomplete="off"></el-input>
 		</el-form-item>
         <el-form-item label="类型" prop="ctype" :label-width="formLabelWidth">
-          <el-input v-model="columnForm.ctype" autocomplete="off"></el-input>
+         <!-- <el-input v-model="columnForm.ctype" autocomplete="off"></el-input> -->
+				<template>
+				  <el-select v-model="columnForm.ctype" placeholder="请选择入库类型" autocomplete="off">
+				   <el-option value="1" label="初期入库"></el-option>
+				   <el-option value="2" label="调拨入库"></el-option>
+				   <el-option value="3" label="下发入库"></el-option>
+				   <el-option value="4" label="盘盈调整"></el-option>
+				  </el-select>
+				</template>
         </el-form-item>
         <el-form-item label="代理公司" prop="corporation" :label-width="formLabelWidth">
           <el-input v-model="columnForm.corporation" autocomplete="off"></el-input>
@@ -79,6 +90,8 @@
 <script>
   import axios from 'axios'
   import qs from 'qs'
+  import FileSaver from 'file-saver'
+  import XLSX from 'xlsx'
   export default {
     name: 'logistics',
     data: function() {
@@ -101,6 +114,21 @@
 		}	
     },
     methods: {
+			
+			exportExcel () {
+			                /* generate workbook object from table */
+			                let wb = XLSX.utils.table_to_book(document.querySelector('#logis'));
+			                /* get binary string as output */
+			                let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' });
+			                try {
+			                    FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '大物流管理.xlsx');
+			                } catch (e)
+			                {
+			                    if (typeof console !== 'undefined')
+			                        console.log(e, wbout)
+			                }
+			                return wbout
+			 },
 		
 		query: function() {
 		

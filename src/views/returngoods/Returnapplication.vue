@@ -2,104 +2,21 @@
   <div class="ktzd">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px;">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>调度</el-breadcrumb-item>
+      <el-breadcrumb-item>返货</el-breadcrumb-item>
       <el-breadcrumb-item>返货申请</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item label="工作单号">
         <el-input v-model="worksheetno" placeholder="请输入工作单号" style="width: 150px;"></el-input>
       </el-form-item>
-      <el-form-item  label="返货原因">
-        <el-select v-model="returntypes"  placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
+      <el-form-item  label="申请单号">
+         <el-input v-model="applicationno" placeholder="请输入工作单号" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-       <!-- <el-button @click="moreGet">更多</el-button> -->
       </el-form-item>
-     <!-- <br>
-     <el-form-item v-show="ok"  label="工作单类型">
-       <el-select  placeholder="请选择" style="width: 150px;">
-         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-         </el-option>
-       </el-select>
-     </el-form-item>
-      <el-form-item v-show="ok"  label="执行状态">
-        <el-select  placeholder="请选择" style="width:150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok"  label="申请单状态">
-        <el-select placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok"  label="进港时间">
-        <el-select  placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item><br />
-      <el-form-item  v-show="ok" label="作废标志">
-        <el-select  placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item  v-show="ok" label="录入时间">
-       <el-input v-model="ss" placeholder="请输入录入时间" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="录入单位">
-       <el-input v-model="ss" placeholder="请输入录入单位" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="确认时间">
-       <el-input v-model="ss" placeholder="请输入确认时间" style="width: 150px;"></el-input>
-      </el-form-item><br>
-     <el-form-item v-show="ok" label="确认单位">
-      <el-input v-model="ss" placeholder="请输入确认单位" style="width: 150px;"></el-input>
-     </el-form-item>
-      <el-form-item v-show="ok" label="确认人">
-       <el-input v-model="ss" placeholder="请输入确认人" style="width: 150px;"></el-input>
-      </el-form-item> -->
     </el-form>
-   <!-- <el-row style="text-align: left;;">
-      <el-button type="primary" @click="dialogFormVisible = true">新增</el-button>
-      <el-button type="primary">修改</el-button>
-      <el-button type="primary">作废</el-button>
-      <el-button type="primary">详情</el-button>
-    </el-row> -->
-    <!--转单的弹框 -->
-    <el-dialog title="分配" :visible.sync="dialogFormVisible" style="width: 500px;">
-      <el-form :model="form">
-        <el-form-item label="所属单位" :label-width="formLabelWidth">
-          <el-select v-model="processingunit" placeholder="请选择"">
-             <el-option
-               v-for=" item
-            in options" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分拣编码">
-          <el-select v-model="sortingcode" placeholder="请选择"">
-             <el-option
-               v-for=" item in
-            fjbm" :key="item.id" :label="item.sortingcode" :value="item.sortingcode">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
-
-
     <!-- 表格 -->
     <el-table :data="result" border style="width: 100%">
 
@@ -109,7 +26,7 @@
       </el-table-column>
       <el-table-column prop="applicationno" label="申请单号" width="80">
       </el-table-column>
-      <el-table-column prop="disWorkordersign.worksheetno" label="工作单号" width="80">
+      <el-table-column prop="worksheetno" label="工作单号" width="80">
       </el-table-column>
       <el-table-column  prop="returntype" label="返货类型" width="80">
      <template slot-scope="scope2">
@@ -121,7 +38,7 @@
       </el-table-column>
       <el-table-column prop="aploss" label="破损丢失件数" width="80">
       </el-table-column>
-      <el-table-column prop="entrytimes" label="进港时间" width="100">
+      <el-table-column prop="entrytime" label="进港时间" width="80">
       </el-table-column>
       <el-table-column prop="syUnits.name" label="接收单位" width="80">
       </el-table-column>
@@ -138,11 +55,12 @@
       <el-table-column prop="personname" label="录入人" width="80">
       </el-table-column>
 
-      <el-table-column label="操作" width="170">
+      <el-table-column label="操作" width="380">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="mini" type="success" @click="handleAdd(scope.row)">新增</el-button>
+          <el-button size="mini" type="success" @click="handleEdit(scope.row)">修改</el-button>
           <el-button size="mini" type="success" @click="handleDetail(scope.row)">详情</el-button>
+           <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
           <el-button size="mini" type="danger" @click="handlezf(scope.row)">作废</el-button>
         </template>
       </el-table-column>
@@ -151,34 +69,6 @@
       :page-sizes="[1,3,5,8]" :page-size="rows" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
 
-    <!-- 修改弹出框-->
-   <!-- <el-dialog :title="title" :visible.sync="dialogFormVisible">
-      <el-form :model="RoleForm" ref="RoleForm" :rules="rules">
-        <el-form-item label="编号" :label-width="formLabelWidth" v-show="false">
-          <el-input v-model="RoleForm.id" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="角色名称" prop="rolename" :label-width="formLabelWidth" >
-          <el-input v-model="RoleForm.rolename" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="是否可用" prop="disabled" :label-width="formLabelWidth">
-          <el-select v-model="RoleForm.disabled" placeholder="--请选择状态--" style="width: 100%;">
-            <el-option value="是" label="是"></el-option>
-            <el-option value="否" label="否"></el-option>
-          </el-select>
-        </el-form-item>
-        </el-table-column>
-
-        <el-form-item label="描述" prop="roledesc" :label-width="formLabelWidth" >
-          <el-input v-model="RoleForm.roledesc" autocomplete="off"></el-input>
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="doSubmit">确 定</el-button>
-      </div>
-    </el-dialog> -->
     <!-- 详情-->
     <el-dialog :title="返货申请详情" :visible.sync="dialogFormVisibledetail">
       <h3 style="text-align: left;">返货申请详情</h3>
@@ -208,6 +98,109 @@
     </el-dialog>
 
 
+    <el-dialog :title="title" :visible.sync="dialogFormVisible">
+      <el-form :model="CancelSigninand" ref="Signinand" :rules="rules">
+        <el-form-item label="编号" prop="id" :label-width="formLabelWidth" v-show="false">
+          <el-input v-model="CancelSigninand.id" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="工作单号" prop="worksheetno" :label-width="formLabelWidth">
+          <el-select @change="selectget1" v-model="CancelSigninand.worksheetno" placeholder="请选择" style=" width: 500px">
+            <el-option v-for="items in workorders" :key="items.worksheetno" :label="items.worksheetno" :value="items.worksheetno">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="返货类型" prop="returntype" :label-width="formLabelWidth">
+          <el-select v-model="CancelSigninand.returntype" placeholder="请选择" style="width: 500px">
+            <el-option v-for="item in returntype" :key="item.id" :label="item.typename" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="申请备注" prop="apremark" :label-width="formLabelWidth">
+          <el-input v-model="CancelSigninand.apremark" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="破损丢失件数" prop="aploss" :label-width="formLabelWidth">
+          <el-input v-model="CancelSigninand.aploss" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="进港时间" prop="entrytime" :label-width="formLabelWidth">
+            <el-date-picker v-model="CancelSigninand.entrytime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="接收单位" prop="receivegunit" :label-width="formLabelWidth">
+          <el-select @change="selectGet" v-model="CancelSigninand.receivegunit" placeholder="请选择" style="width: 500px">
+            <el-option v-for="item in worktypes" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="作废标志" prop="invalidatesign" :label-width="formLabelWidth">
+          <template>
+            <el-radio v-model="CancelSigninand.invalidatesign" label="1">否</el-radio>
+            <el-radio v-model="CancelSigninand.invalidatesign" label="2">是</el-radio>
+          </template>
+        </el-form-item>
+        <el-form-item label="返货单位" prop="returnunit" :label-width="formLabelWidth">
+          <el-select @change="selectGet" v-model="CancelSigninand.returnunit" placeholder="请选择" style="width: 500px">
+            <el-option v-for="item in worktypes" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="录入时间" prop="recordingtime" :label-width="formLabelWidth">
+            <el-date-picker v-model="CancelSigninand.recordingtime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="录入人" prop="personname"  :label-width="formLabelWidth" >
+          <el-input v-model="CancelSigninand.personname" readonly="true" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="录入单位" prop="entryunit"  :label-width="formLabelWidth" v-show="false" >
+          <el-input v-model="CancelSigninand.entryunit"  readonly="true" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认单位" prop="confirmationunit" :label-width="formLabelWidth">
+          <el-select @change="getSelect" v-model="CancelSigninand.confirmationunit" placeholder="请选择" style="width: 500px">
+            <el-option v-for="item in worktypes" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="确认人" prop="inputpersonid" :label-width="formLabelWidth">
+          <el-select v-model="CancelSigninand.confirmationpersonname" placeholder="请选择" style="width: 500px">
+            <el-option v-for="items in inputperson" :key="items.empname" :label="items.empname" :value="items.empname">
+            </el-option>
+          </el-select>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="确认时间" prop="confirmationtime" :label-width="formLabelWidth">
+            <el-date-picker  v-model="CancelSigninand.confirmationtime" type="datetime" placeholder="选择日期时间">
+            </el-date-picker>
+        </el-form-item>
+
+        <el-form-item label="返货处理状态" prop="treatmentstate" :label-width="formLabelWidth">
+          <el-select v-model="CancelSigninand.treatmentstate" placeholder="请选择" style="width: 500px">
+            <el-option v-for="item in returnstate" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="返货执行状态" prop="apreturnstatus" :label-width="formLabelWidth">
+          <el-select v-model="CancelSigninand.apreturnstatus" placeholder="请选择" style="width: 500px">
+            <el-option v-for="item in apreturntype" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="系统自动确认标志" prop="identificationsign" :label-width="formLabelWidth">
+          <template>
+            <el-radio v-model="CancelSigninand.identificationsign" label="1">未确认</el-radio>
+            <el-radio v-model="CancelSigninand.identificationsign" label="2">已确认</el-radio>
+          </template>
+        </el-form-item>
+        <el-form-item label="拒绝类型" prop="denialtype" :label-width="formLabelWidth" v-show="false">
+          <el-input v-model="CancelSigninand.denialtype" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="处理意见" prop="handlingopinions" :label-width="formLabelWidth" v-show="false">
+          <el-input v-model="CancelSigninand.handlingopinions" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addEditSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
+
+
 
   </div>
 </template>
@@ -221,6 +214,7 @@
       return {
         result: [],
         worksheetno: '',
+        applicationno:'',
         dialogFormVisible: false,
         dialogFormVisibledetail:false,
         total: 10,
@@ -254,7 +248,7 @@
           invalidatesign:null,
           returnunit:null,
           recordingtimes:null,
-          entryunit:null,
+          entryunit:0,
           personname:null,
           confirmationtimes:null,
           confirmationunit:null,
@@ -265,7 +259,136 @@
           denialtype:null,
           handlingopinions:null
         },
-        id:''
+        id:'',
+        returntype: [{
+            id: 1,
+            typename: '没有原因'
+
+          },
+          {
+            id: 2,
+            typename: '不想要'
+
+          },
+          {
+            id: 3,
+            typename: '错拍'
+
+          },
+          {
+            id: 4,
+            typename: '破损'
+
+          }
+        ],
+        workorders:[],
+        worktypes:[],
+        returnstate:[
+          {
+              id:1,
+              name:'未确认'
+
+            },
+          {
+            id:2,
+            name:'同意返货'
+
+          },
+          {
+            id:3,
+            name:'拒绝'
+
+          },
+          {
+            id:4,
+            name:'同意转发'
+
+          }
+
+        ],
+        apreturntype:[{
+          id:1,
+          name:'无'
+        },
+        {
+          id:2,
+          name:'已转发'
+        },
+        {
+          id:3,
+          name:'已返货'
+        }
+        ],
+        CancelSigninand: {
+          id: 0,
+          worksheetno: null,
+          returntype: null,
+          apremark:null,
+          aploss:0,
+          entrytime:null,
+          receivegunit:null,
+          invalidatesign:null,
+          returnunit:null,
+          recordingtime:null,
+          confirmationunit: null,
+          confirmationpersonname: null,
+          confirmationtime: null,
+          identificationsign: '1',
+          personname:null,
+          entryunit:null,
+          treatmentstate:null,
+          apreturnstatus:null,
+          handlingopinions:null,
+          denialtype:null
+
+        },
+        rules:{
+          worksheetno:[
+            { required: true, message: '请选择工作单号', trigger: 'change'}
+          ],
+          returntype:[
+            {required: true, message: '请选择返货类型', trigger: 'change'}
+          ],
+          apremark:[
+            {
+               required: true, message: '请输入申请备注', trigger: 'blur'
+            }
+          ],
+          aploss:[
+            { required: true, message: '请输入申请备注和填数字',trigger: 'blur'}
+
+          ],
+          entrytime:[{
+            required: true, message: '请选择进港时间', trigger: 'change'
+          }],
+          receivegunit:[{
+             required: true, message: '请选择接收单位', trigger: 'change'
+            }
+          ],
+          returnunit:[{
+             required: true, message: '请选择返货单位', trigger: 'change'
+          }],
+          recordingtime:[{
+             required: true, message: '请选择录入时间', trigger: 'change'
+          }],
+          confirmationunit:[{
+             required: true, message: '请选择确认单位', trigger: 'change'
+          }],
+          confirmationpersonname:[{
+            required: true, message: '请选择确认人', trigger: 'change'
+          }],
+          confirmationtime:[{
+            required: true, message: '请选择确认时间', trigger: 'change'
+            },
+          ],
+          treatmentstate:[{
+            required: true, message: '请选择返货处理状态', trigger: 'change'
+          }],
+          apreturnstatus:[{
+            required: true, message: '请选择返货执行状态', trigger: 'change'
+          }]
+
+        }
 
       }
     },
@@ -275,6 +398,7 @@
         pages: this.pages,
         rows: this.rows,
         worksheetno:this.worksheetno,
+        applicationno:this.applicationno
       }
       var str = qs.stringify(fy);
       let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -298,7 +422,8 @@
        let fy = {
          pages: this.pages,
          rows: this.rows,
-         worksheetno:this.worksheetno
+         worksheetno:this.worksheetno,
+         applicationno:this.applicationno
        }
        var str = qs.stringify(fy);
        let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -315,6 +440,7 @@
         pages: this.pages,
         rows: this.rows,
         worksheetno:this.worksheetno,
+        applicationno:this.applicationno
       }
       var str = qs.stringify(fy);
       let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -354,19 +480,129 @@
        });
      });
 },
+
+//添加
+        handleAdd:function(){
+          this.title="增加";
+          this.dialogFormVisible = true;
+          this.CancelSigninand.invalidatesign='1';
+          //根据empno查询
+          this.empno=this.$session.get("key",this.empno);
+           let pages = {
+             empno:this.empno
+           }
+           let str1=qs.stringify(pages);
+           let url5 = "http://localhost/wuliuxm/selectSyEmpByempnoHlp"
+           axios.post(url5, str1).then(response => {
+               this.CancelSigninand.entryunit=response.data.empunit;
+               this.CancelSigninand.personname=response.data.empname;
+           }).catch(error => {
+             console.log('erro')
+           });
+        },
 /*编辑修改 */
       handleEdit: function(row) {
-       // alert("修改");
-        this.title="角色编辑";
-        this.RoleForm.id=row.id;
-        this.RoleForm.rolename=row.rolename;
-        this.RoleForm.roledesc=row.roledesc;
-        this.RoleForm.disabled="否";
-        if(row.disabled=1){
-           this.RoleForm.disabled="是";
-        }
-
+        this.title="修改";
         this.dialogFormVisible = true;
+        this.CancelSigninand.id=row.id;
+         this.CancelSigninand.worksheetno=row.worksheetno;
+          this.CancelSigninand.returntype=row.returntype;
+          this.CancelSigninand.apremark=row.apremark;
+           this.CancelSigninand.aploss=row.aploss;
+            this.CancelSigninand.entrytime=row.entrytime;
+             this.CancelSigninand.receivegunit=row.receivegunit;
+              this.CancelSigninand.invalidatesign=row.invalidatesign+'';
+               this.CancelSigninand.returnunit=row.returnunit;
+                this.CancelSigninand.confirmationtime=row.confirmationtime;
+                 this.CancelSigninand.recordingtime=row.recordingtime;
+                  this.CancelSigninand.confirmationunit=row.confirmationunit;
+                   this.CancelSigninand.confirmationpersonname=row.confirmationpersonname;
+                    this.CancelSigninand.identificationsign=row.identificationsign+'';
+                     this.CancelSigninand.personname=row.personname;
+                      this.CancelSigninand.entryunit=row.entryunit;
+                       this.CancelSigninand.treatmentstate=row.treatmentstate;
+                        this.CancelSigninand.apreturnstatus=row.apreturnstatus;
+                         this.CancelSigninand.handlingopinions=row.handlingopinions;
+                          this.CancelSigninand.denialtype=row.denialtype;
+
+      },
+
+      addEditSubmit:function(){
+        this.$refs['Signinand'].validate((valid) => {
+          console.log(valid);
+          if (valid) {
+            if (this.title=='增加') {
+                 let url = 'http://localhost/wuliuxm/addRetReturnlistsHlp';
+                 let pages = {
+                     id:this.CancelSigninand.id,
+                     worksheetno: this.CancelSigninand.worksheetno,
+                     returntype: this.CancelSigninand.returntype,
+                     apremark: this.CancelSigninand.apremark,
+                     aploss: this.CancelSigninand.aploss,
+                     entrytime: this.CancelSigninand.entrytime,
+                     receivegunit: this.CancelSigninand.receivegunit,
+                     invalidatesign: this.CancelSigninand.invalidatesign,
+                     returnunit: this.CancelSigninand.returnunit,
+                     recordingtime: this.CancelSigninand.recordingtime,
+                     confirmationunit: this.CancelSigninand.confirmationunit,
+                     confirmationpersonname: this.CancelSigninand.confirmationpersonname,
+                     confirmationtime: this.CancelSigninand.confirmationtime,
+                     identificationsign: this.CancelSigninand.identificationsign,
+                     personname:this.CancelSigninand.personname,
+                     entryunit:this.CancelSigninand.entryunit,
+                     treatmentstate: this.CancelSigninand.treatmentstate,
+                     apreturnstatus: this.CancelSigninand.apreturnstatus,
+                     handlingopinions: this.CancelSigninand.handlingopinions,
+                     denialtype: this.CancelSigninand.denialtype
+                     }
+                     axios.post(url, qs.stringify(pages)).then(resp => {
+                       console.log(resp)
+                       this.dialogFormVisible = false; //隐藏
+                       this.onSubmit();
+                     }).catch(error => {
+                       console.log("失败");
+                     });
+            }
+           if(this.title=='修改'){
+             let url = 'http://localhost/wuliuxm/updateRetReturnlistsHlp';
+             let pages = {
+                  id:this.CancelSigninand.id,
+                  worksheetno: this.CancelSigninand.worksheetno,
+                  returntype: this.CancelSigninand.returntype,
+                  apremark: this.CancelSigninand.apremark,
+                  aploss: this.CancelSigninand.aploss,
+                  entrytime: this.CancelSigninand.entrytime,
+                  receivegunit: this.CancelSigninand.receivegunit,
+                  invalidatesign: this.CancelSigninand.invalidatesign,
+                  returnunit: this.CancelSigninand.returnunit,
+                  recordingtime: this.CancelSigninand.recordingtime,
+                  confirmationunit: this.CancelSigninand.confirmationunit,
+                  confirmationpersonname: this.CancelSigninand.confirmationpersonname,
+                  confirmationtime: this.CancelSigninand.confirmationtime,
+                  identificationsign: this.CancelSigninand.identificationsign,
+                  personname:this.CancelSigninand.personname,
+                  entryunit:this.CancelSigninand.entryunit,
+                  treatmentstate: this.CancelSigninand.treatmentstate,
+                  apreturnstatus: this.CancelSigninand.apreturnstatus,
+                  handlingopinions: this.CancelSigninand.handlingopinions,
+                  denialtype: this.CancelSigninand.denialtype
+
+                 }
+                 axios.post(url, qs.stringify(pages)).then(resp => {
+                   console.log(resp)
+                   this.dialogFormVisible = false; //隐藏
+                   this.onSubmit();
+                 }).catch(error => {
+                   console.log("失败");
+                 });
+             }
+
+               } else {
+                 console.log('error submit!!提交失败');
+                 return false;
+               }
+             });
+
 
       },
 
@@ -400,10 +636,10 @@
         }
 
         this.Returnapplication.returnunit=row.syUnits.name;
-        this.Returnapplication.recordingtimes=row.recordingtimes;
+        this.Returnapplication.recordingtimes=row.recordingtime;
         this.Returnapplication.entryunit=row.syUnits.name;
         this.Returnapplication.personname=row.personname;
-        this.Returnapplication.confirmationtimes=row.confirmationtimes;
+        this.Returnapplication.confirmationtimes=row.confirmationtime;
         this.Returnapplication.confirmationunit=row.syUnits.name;
         this.Returnapplication.confirmationpersonname=row.confirmationpersonname;
         this.Returnapplication.treatmentstate=row.treatmentstate;
@@ -438,6 +674,34 @@
       //作废
      handlezf:function(row){
 
+     },
+     getSelect: function(ids) {
+       let obj = {};
+       obj = this.worktypes.find((items) => { //这里的selectList就是上面遍历的数据源
+         return items.id === ids; //筛选出匹配数据
+       });
+       this.id = ids;
+       let param = {
+         id: this.id
+       }
+       var str = qs.stringify(param);
+       let url = 'http://localhost/wuliuxm/selectSyUnitsByIdHlp';
+       axios.post(url, str).then(resp => {
+         let sets = []
+         if (resp.data != null || resp.data != undefined) {
+           console.log(resp)
+           for (let i = 0; i < resp.data.length; i++) {
+             sets = resp.data[i].syEmps;
+           }
+           this.inputperson = sets;
+
+         }
+
+       }).catch(error => {
+         console.log("失败");
+       });
+
+
      }
 
     },
@@ -448,6 +712,7 @@
            pages: this.pages,
            rows: this.rows,
            worksheetno:this.worksheetno,
+           applicationno:this.applicationno
          }
          var str = qs.stringify(fy);
          let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -457,6 +722,24 @@
          }).catch(error => {
            console.log('erro')
          });
+
+
+         //查询所有单位同时对应得人
+         let url2 = "http://localhost/wuliuxm/selectSyUnitsHlp"
+         axios.post(url2, null).then(response => {
+           this.worktypes = response.data;
+         }).catch(error => {
+           console.log('erro')
+         });
+         //查询工作单号结果集
+         let url4 = "http://localhost/wuliuxm/selectAccWorksheetAndRetReturnlistByJobHlp"
+         axios.post(url4, null).then(response => {
+           this.workorders = response.data;
+         }).catch(error => {
+           console.log('erro')
+         });
+
+
 
     }
   }

@@ -1,18 +1,27 @@
 <template>
   <div>
-    首页
-   <el-tree
-     :data="qxtext"
-     show-checkbox
-     default-expand-all
-     node-key="id"
-     ref="tree"
-     highlight-current
-     :props="defaultProps"
-     >
-   </el-tree>
+    <h2 align="left">宅急送物流管理系统</h2>
+    <hr />
 
-
+收货百分比：
+<br />
+<br />
+<el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
+<br />
+送货百分比：
+<br />
+<el-progress :text-inside="true" :stroke-width="24" :percentage="100" status="success"></el-progress>
+<br />
+退货百分比：
+<br />
+<el-progress :text-inside="true" :stroke-width="22" :percentage="20" status="warning"></el-progress>
+<br />
+转单百分比：
+<br />
+<el-progress :text-inside="true" :stroke-width="20" :percentage="1" status="exception"></el-progress>
+ <br />
+<el-calendar v-model="value">
+</el-calendar>
   </div>
 </template>
 
@@ -20,37 +29,17 @@
   import axios from 'axios'
   import qs from 'qs'
   export default {
-    name:'Home',
-    methods: {
-
-      resetChecked() {
-        this.$refs.tree.setCheckedKeys([]);
+    name: 'Home',
+    data:function(){
+      return{
+       value:new Date
       }
-    },
-    created: function() { /* 初始化 */
-      //初始化分页查询
-         let url = 'http://localhost/wuliuxm/FillAllOneTwoColumnSyMenus';
-          axios.post(url, null).then(resps => {
-            console.log("abc" + resps)
-            console.log(resps.data)
-            //this.qxtext = resps.data;
-          }).catch(error => {
-            console.log(error);
-          });
-
-
-    },
-
-    data:function() {
-      return {
-        qxtext:[],
-          children: null,
-          label: null,
-          defaultProps: {
-            children: 'symbols',
-            label: 'text'
-        }
-      };
     }
-  };
+
+
+    }
+
 </script>
+<style>
+
+</style>

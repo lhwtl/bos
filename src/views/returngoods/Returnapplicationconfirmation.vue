@@ -2,95 +2,21 @@
   <div class="ktzd">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px;">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>调度</el-breadcrumb-item>
+      <el-breadcrumb-item>返货</el-breadcrumb-item>
       <el-breadcrumb-item>返货申请确认</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item label="工作单号">
         <el-input v-model="worksheetno" placeholder="请输入工作单号" style="width: 150px;"></el-input>
       </el-form-item>
-      <el-form-item  label="返货原因">
-        <el-select v-model="returntypes"  placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
+      <el-form-item  label="申请单号">
+         <el-input v-model="applicationno" placeholder="请输入工作单号" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-        <el-button @click="moreGet">更多</el-button>
       </el-form-item>
-      <br>
-     <el-form-item v-show="ok"  label="工作单类型">
-       <el-select  placeholder="请选择" style="width: 150px;">
-         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-         </el-option>
-       </el-select>
-     </el-form-item>
-     <el-form-item v-show="ok" label="异常备注">
-      <el-input v-model="ss" placeholder="请输入异常备注" style="width: 150px;"></el-input>
-     </el-form-item>
-      <el-form-item v-show="ok"  label="执行状态">
-        <el-select  placeholder="请选择" style="width:150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok"  label="申请单状态">
-        <el-select placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <br />
-      <el-form-item  v-show="ok" label="作废标志">
-        <el-select  placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item  v-show="ok" label="确认标志">
-        <el-select  placeholder="请选择" style="width: 150px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-
     </el-form>
-
-    <el-row style="text-align: left;;">
-      <el-button type="primary">申请确认</el-button>
-      <el-button type="primary">货物追踪</el-button>
-      <el-button type="primary">返货</el-button>
-      <el-button type="primary">拒绝</el-button>
-      <el-button type="primary">取消</el-button>
-    </el-row>
-    <!--转单的弹框 -->
-    <el-dialog title="分配" :visible.sync="dialogFormVisible" style="width: 500px;">
-      <el-form :model="form">
-        <el-form-item label="所属单位" :label-width="formLabelWidth">
-          <el-select v-model="processingunit" placeholder="请选择"">
-             <el-option
-               v-for=" item
-            in options" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分拣编码">
-          <el-select v-model="sortingcode" placeholder="请选择"">
-             <el-option
-               v-for=" item in
-            fjbm" :key="item.id" :label="item.sortingcode" :value="item.sortingcode">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
-
 
     <!-- 表格 -->
     <el-table :data="result" border style="width: 100%">
@@ -99,13 +25,13 @@
       </el-table-column>
       <el-table-column prop="id" label="序号" width="80">
       </el-table-column>
-      <el-table-column prop="confirmationtimes" label="确认时间" width="100">
+      <el-table-column prop="confirmationtime" label="确认时间" width="80">
       </el-table-column>
-      <el-table-column prop="syUnits.name" label="确认单位" width="150">
+      <el-table-column prop="syUnits.name" label="确认单位" width="80">
       </el-table-column>
-      <el-table-column  prop="confirmationpersonname" label="确认人" width="150">
+      <el-table-column  prop="confirmationpersonname" label="确认人" width="80">
       </el-table-column>
-      <el-table-column  prop="treatmentstate" label="返货处理状态" width="150">
+      <el-table-column  prop="treatmentstate" label="返货处理状态" width="80">
          <template slot-scope="scope1">
          <span v-if="scope1.row.treatmentstate==1">未确认</span>
          <span v-if="scope1.row.treatmentstate==2">同意返货</span>
@@ -115,14 +41,22 @@
       </el-table-column>
       <el-table-column v-if="identificationsign=1" prop="identificationsign" label="系统自动确认标志" width="150">
          <template slot-scope="scope2">
-         <span v-if="scope2.row.identificationsign==1">是</span>
-         <span v-if="scope2.row.identificationsign==2">否</span>
+         <span v-if="scope2.row.identificationsign==1">否</span>
+         <span v-if="scope2.row.identificationsign==2">是</span>
          </template>
       </el-table-column>
-      <el-table-column  label="反馈信息" width="100">
+      <el-table-column  label="反馈信息" width="80">
         还没有
       </el-table-column>
-      <el-table-column prop="handlingopinions" label="处理意见" width="100">
+      <el-table-column prop="handlingopinions" label="处理意见" width="80">
+      </el-table-column>
+      <el-table-column label="操作" width="360">
+        <template slot-scope="scope">
+      <el-button size="mini" type="success" @click="sqQRClick(scope.row)">申请确认</el-button>
+      <el-button size="mini" type="success" @click="sqFhClick(scope.row)">转发</el-button>
+      <el-button size="mini" type="success" @click="jJClick(scope.row)">拒绝</el-button>
+      <el-button size="mini" type="success" @click="qxClick(scope.row)">取消</el-button>
+      </template>
       </el-table-column>
     </el-table>
     <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pages"
@@ -142,6 +76,7 @@
       return {
         result: [],
         worksheetno: '',
+        applicationno:'',
         dialogFormVisible: false,
         total: 10,
         pages: 1,
@@ -162,7 +97,9 @@
                }],
         ok: false,
         sortingcode: '',
-        returntypes:''
+        returntypes:'',
+        treatmentstate:0,
+        id:0
 
       }
     },
@@ -175,6 +112,7 @@
         pages: this.pages,
         rows: this.rows,
         worksheetno:this.worksheetno,
+        applicationno:this.applicationno
       }
       var str = qs.stringify(fy);
       let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -198,7 +136,8 @@
        let fy = {
          pages: this.pages,
          rows: this.rows,
-         worksheetno:this.worksheetno
+         worksheetno:this.worksheetno,
+         applicationno:this.applicationno
        }
        var str = qs.stringify(fy);
        let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -215,6 +154,7 @@
         pages: this.pages,
         rows: this.rows,
         worksheetno:this.worksheetno,
+        applicationno:this.applicationno
       }
       var str = qs.stringify(fy);
       let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"
@@ -225,6 +165,69 @@
         console.log('erro')
       });
 
+    },
+    sqQRClick:function(rows){
+      this.id=rows.id;
+      this.treatmentstate=2;
+      let fy = {
+        id: this.id,
+       treatmentstate:this.treatmentstate
+      }
+      var str = qs.stringify(fy);
+      let url = "http://localhost/wuliuxm/updateFHQRRetReturnlistHlp"
+      axios.post(url, str).then(response => {
+        this.onSubmit();
+      }).catch(error => {
+        console.log('erro')
+      });
+
+    },
+    jJClick:function(rows){
+      this.id=rows.id;
+      this.treatmentstate=3;
+      let fy = {
+        id: this.id,
+       treatmentstate:this.treatmentstate
+      }
+      var str = qs.stringify(fy);
+      let url = "http://localhost/wuliuxm/updateFHQRRetReturnlistHlp"
+      axios.post(url, str).then(response => {
+        this.onSubmit();
+      }).catch(error => {
+        console.log('erro')
+      });
+
+    },
+    qxClick:function(rows){
+      this.id=rows.id;
+      this.treatmentstate=1;
+      let fy = {
+        id: this.id,
+       treatmentstate:this.treatmentstate
+      }
+      var str = qs.stringify(fy);
+      let url = "http://localhost/wuliuxm/updateFHQRRetReturnlistHlp"
+      axios.post(url, str).then(response => {
+        this.onSubmit();
+      }).catch(error => {
+        console.log('erro')
+      });
+
+    },
+    sqFhClick:function(rows){
+      this.id=rows.id;
+      this.treatmentstate=4;
+      let fy = {
+        id: this.id,
+       treatmentstate:this.treatmentstate
+      }
+      var str = qs.stringify(fy);
+      let url = "http://localhost/wuliuxm/updateFHQRRetReturnlistHlp"
+      axios.post(url, str).then(response => {
+        this.onSubmit();
+      }).catch(error => {
+        console.log('erro')
+      });
     }
     },
     //钩子函数
@@ -234,6 +237,7 @@
            pages: this.pages,
            rows: this.rows,
            worksheetno:this.worksheetno,
+           applicationno:this.applicationno
          }
          var str = qs.stringify(fy);
          let url = "http://localhost/wuliuxm/selectRetReturnlistHlp"

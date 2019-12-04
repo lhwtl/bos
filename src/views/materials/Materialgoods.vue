@@ -30,9 +30,22 @@
       <el-table-column prop="itemname" label="物品名称" min-width="50"></el-table-column>
       <el-table-column prop="plannedprice" label="计划价格" min-width="70"></el-table-column>
       <el-table-column prop="specifications" label="规格" min-width="70"></el-table-column>
-      <el-table-column prop="type" label="类型" min-width="70"></el-table-column>
+      <el-table-column prop="type" label="类型" min-width="70">
+				<template slot-scope="scope1">
+				     <span v-if="scope1.row.type==1">初期入库</span>
+				     <span v-if="scope1.row.type==2">调拨入库</span>
+					 <span v-if="scope1.row.type==3">下发入库</span>
+					 <span v-if="scope1.row.type==4">盘盈调整</span>
+				  </template>
+			</el-table-column>
       <el-table-column prop="measurementunit" label="计量单位" min-width="70"></el-table-column>
-	  <el-table-column prop="status" label="状态" min-width="70"></el-table-column>
+	  <el-table-column prop="status" label="状态" min-width="70">
+			<template slot-scope="scope1">
+			     <span v-if="scope1.row.status==1">正常</span>
+			     <span v-if="scope1.row.status==-1">作废</span>
+							
+			  </template>
+		</el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
@@ -62,10 +75,24 @@
           <el-input v-model="columnForm.specifications" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-          <el-input v-model="columnForm.type" autocomplete="off"></el-input>
+         <!-- <el-input v-model="columnForm.type" autocomplete="off"></el-input> -->
+		 <template>
+		   <el-select v-model="columnForm.type" placeholder="请选择入库类型" autocomplete="off">
+		    <el-option value="1" label="初期入库"></el-option>
+		    <el-option value="2" label="调拨入库"></el-option>
+		    <el-option value="3" label="下发入库"></el-option>
+		    <el-option value="4" label="盘盈调整"></el-option>
+		   </el-select>
+		 </template>
         </el-form-item>
 		<el-form-item label="状态" prop="status" :label-width="formLabelWidth">
-		  <el-input v-model="columnForm.status" autocomplete="off"></el-input>
+		  <!-- <el-input v-model="columnForm.status" autocomplete="off"></el-input> -->
+		  				 <template>
+		  				   <el-select v-model="columnForm.status" placeholder="请选择状态" autocomplete="off">
+		  				    <el-option value="1" label="正常"></el-option>
+		  				    <el-option value="-1" label="作废"></el-option>
+		  				   </el-select>
+		  				 </template>
 		</el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

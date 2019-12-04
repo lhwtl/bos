@@ -2,7 +2,7 @@
   <div class="ktzd">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px;">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>调度</el-breadcrumb-item>
+      <el-breadcrumb-item>物流管理</el-breadcrumb-item>
       <el-breadcrumb-item>跟踪表登记</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :inline="true" class="demo-form-inline">
@@ -17,10 +17,6 @@
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-row style="text-align: left;;">
-      <el-button type="primary">生成</el-button>
-    </el-row>
-
     <!-- 第一个表格 -->
     <el-table :data="result" border style="width: 100%">
       <el-table-column prop="id" label="ID" width="250">
@@ -43,9 +39,9 @@
       </el-table-column>
       <el-table-column prop="nodename" label="节点名称" width="150">
       </el-table-column>
-      <el-table-column prop="starttimes" label="发车时间" width="150">
+      <el-table-column prop="starttime" label="发车时间" width="150">
       </el-table-column>
-      <el-table-column prop="arrivaltimes" label="到达时间" width="150">
+      <el-table-column prop="arrivaltime" label="到达时间" width="150">
       </el-table-column>
       <el-table-column prop="carint" label="车号" width="150">
       </el-table-column>

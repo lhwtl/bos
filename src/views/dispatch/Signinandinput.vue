@@ -3,9 +3,9 @@
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px;">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>调度</el-breadcrumb-item>
-      <el-breadcrumb-item>人工调度</el-breadcrumb-item>
+      <el-breadcrumb-item>签收录入</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-form :inline="true" class="demo-form-inline">
+    <el-form  :inline="true" class="demo-form-inline">
       <el-form-item label="签收人">
         <el-input v-model="recipient" placeholder="请输入签收人" style="width: 150px;"></el-input>
       </el-form-item>
@@ -19,38 +19,15 @@
       </el-form-item>
       <br>
       <el-form-item v-show="ok" label="签收类型">
-        <el-select v-model="value" placeholder="请选择" style="width: 100px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        <el-select v-model="signtypes" placeholder="请选择" style="width: 300px;">
+          <el-option v-for="item in options" :key="item.id" :label="item.value" :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item v-show="ok" label="派送人工号">
-        <el-input v-model="ss" placeholder="请输入派送人工号" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="签收日期">
-        <el-input v-model="ss" placeholder="YYYY-MM-DD" style="width: 150px;"></el-input>-
-        <el-input v-model="ss" placeholder="YYYY-MM-DD" style="width: 150px;"></el-input>
-      </el-form-item><br />
-      <el-form-item v-show="ok" label="单位">
-        <el-select v-model="value" placeholder="请选择" style="width: 200px;">
-          <el-option v-for="item in istf" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok" label="含下级">
-        <el-select v-model="value" placeholder="请选择" style="width: 200px;">
-          <el-option v-for="item in istf" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok" label="作废">
-        <el-select v-model="value" placeholder="请选择" style="width: 200px;">
-          <el-option  :key="1" :label="是" :value="1">
-          </el-option>
-        </el-select>
+      <el-form-item v-show="ok" label="派送员工号">
+        <el-input v-model="courierint" placeholder="请输入派送人工号" style="width: 300px;"></el-input>
       </el-form-item>
     </el-form>
-       <el-button size="mini" type="success" @click="handleAdd(scope.row)" style="margin-left: -950px;">新增</el-button>
     <!-- 表格 -->
     <el-table :data="result" border style="width: 100%">
 
@@ -82,6 +59,7 @@
       </el-table-column>
       <el-table-column label="操作" width="220">
         <template slot-scope="scope">
+          <el-button size="mini" type="success" @click="handleAdd">新增</el-button>
           <el-button size="mini" type="success" @click="handleEdit(scope.row)">修改</el-button>
           <el-button size="mini" type="success" @click="handleDetail(scope.row)">详情</el-button>
         </template>
@@ -126,7 +104,7 @@
         </el-form-item>
         <el-form-item label="工作单号" prop="worksheetno" :label-width="formLabelWidth" >
           <el-select @change="selectget1" v-model="Signinand.worksheetno" placeholder="请选择" style=" :  500px"  >
-            <el-option v-for="items in workorders" :key="items.jobno" :label="items.jobno" :value="items.jobno">
+            <el-option v-for="items in workorders" :key="items.worksheetno" :label="items.worksheetno" :value="items.worksheetno">
             </el-option>
           </el-select>
         </el-form-item>
@@ -189,24 +167,28 @@
         result: [],
         recipient: '',
         worksheetno: '',
-        form: {
-          name: '',
-          region: ''
-
-        },
+        signtypes:1,
+        courierint:1,
         dialogFormVisibledetail: false,
         total: 10,
         pages: 1,
         rows: 5,
         radio: 3,
-        ww: '',
-        ss: '',
-        qq: '',
-        zrmb: '',
-        cc: '',
-        options: [],
+        options: [
+          {
+            id:1,
+            value:'否',
+            ids:1,
+            names:'否'
+          },
+          {
+            id:2,
+            value:'是',
+            ids:1,
+            names:'是'
+          }
+        ],
         ok: false,
-        fjbm: [],
         sortingcode: '',
        Qsdescrible:{
          workorderid:null,
@@ -225,9 +207,7 @@
          name1:null,
          inputtimes:null,
          invalidatemark:null,
-
-         abnormalmark:null
-
+         abnormalmark:null,
        },
        title:'',
        dialogFormVisible:false,
@@ -243,7 +223,7 @@
            inputpersonid:null,
            inputid:null,
            xx1:null,
-           xx2:null
+           xx2:null,
        },
        worktypes:[],
        signtype:'1',
@@ -253,7 +233,27 @@
        byempgetemp:{},
        workorders:[],
        id:0,
-       jobno:''
+       rules:{
+         worksheetno:[
+           {required: true, message: '请选择工作单号', trigger: 'change' }
+         ],
+          workordertype:[{
+            required: true, message: '请选择工作单状态', trigger: 'change'
+          }],
+          recipient:[{
+            required: true, message: '请选择签收人', trigger: 'change'
+            }
+          ],
+          courierint:[{
+             required: true, message: '请选择派送员工号', trigger: 'change'
+          }],
+          couriername:[{
+            required: true, message: '请输入派送员工姓名', trigger: 'blur'
+          }],
+          worksheepnos:'',
+
+
+       }
       }
     },
     methods: {
@@ -262,7 +262,9 @@
           pages: this.pages,
           rows: this.rows,
           recipient: this.recipient,
-          worksheetno: this.worksheetno
+          worksheetno: this.worksheetno,
+          signtype:this.signtypes,
+          courierint:this.courierint,
         }
         var str = qs.stringify(fy);
         let url = "http://localhost/wuliuxm/selectDisWorkordersignHlp"
@@ -286,7 +288,9 @@
           pages: this.pages,
           rows: this.rows,
           recipient: this.recipient,
-          worksheetno: this.worksheetno
+          worksheetno: this.worksheetno,
+          signtype:this.signtypes,
+          courierint:this.courierint,
         }
         var str = qs.stringify(fy);
         let url = "http://localhost/wuliuxm/selectDisWorkordersignHlp"
@@ -303,7 +307,9 @@
           pages: this.pages,
           rows: this.rows,
           recipient: this.recipient,
-          worksheetno: this.worksheetno
+          worksheetno: this.worksheetno,
+          signtype:this.signtypes,
+          courierint:this.courierint,
         }
         var str = qs.stringify(fy);
         let url = "http://localhost/wuliuxm/selectDisWorkordersignHlp"
@@ -351,10 +357,10 @@
       },
       //新增
       handleAdd:function(row){
-        this.title='新增';
+        this.title='增加';
         this.dialogFormVisible=true;
         //根据empno查询
-        this.empno=this.$cookies.get("gxr");
+        this.empno=this.$session.get("key");
          let pages = {
            empno:this.empno
          }
@@ -382,7 +388,7 @@
       handleEdit:function(row){
         this.title='修改';
         //根据empno查询
-        this.empno=this.$cookies.get("gxr");
+         this.empno=this.$session.get("key");
          let pages = {
            empno:this.empno
          }
@@ -440,7 +446,6 @@
             }
            if(this.title=='修改'){
              let url = 'http://localhost/wuliuxm/updateDisWorkordersignHlp';
-             alert(url);
              let pages = {
                    id:this.Signinand.id,
                    worksheetno:this.Signinand.worksheetno,
@@ -495,15 +500,15 @@
         obj1 = this.workorders.find((items)=>{//这里的selectList就是上面遍历的数据源
                return items.id === ids;//筛选出匹配数据
            });
-           this.jobno=ids;
-
+           this.worksheetnos=ids;
            let param1={
-             jobno:this.jobno
+             worksheetnos:this.worksheetnos
            }
            var str9=qs.stringify(param1);
-            let url = 'http://localhost/wuliuxm/selectAccWorkorderByJonNo';
+            let url = 'http://localhost/wuliuxm/selectAccWorksheetByworksheetnoHlp';
            axios.post(url, str9).then(resp => {
                   this.Signinand.workorderid=resp.data.id;
+
                }).catch(error => {
                  console.log("失败");
                });
@@ -520,7 +525,10 @@
         pages: this.pages,
         rows: this.rows,
         recipient: this.recipient,
-        worksheetno: this.worksheetno
+        worksheetno: this.worksheetno,
+        signtype:this.signtypes,
+        courierint:this.courierint,
+
       }
       var str = qs.stringify(fy);
       let url = "http://localhost/wuliuxm/selectDisWorkordersignHlp"
@@ -559,9 +567,16 @@
         console.log('erro')
       });
 
-      let url5 = "http://localhost/wuliuxm/selectAllAccWorkorderHlp"
+      /* let url5 = "http://localhost/wuliuxm/selectAllAccWorkorderHlp"
       axios.post(url5, null).then(response => {
        this.workorders = response.data;
+      }).catch(error => {
+        console.log('erro')
+      }); */
+      //查询工作单号结果集
+      let url5 = "http://localhost/wuliuxm/selectAccWorksheetAndDisWorkordersignHlp"
+      axios.post(url5, null).then(response => {
+        this.workorders = response.data;
       }).catch(error => {
         console.log('erro')
       });

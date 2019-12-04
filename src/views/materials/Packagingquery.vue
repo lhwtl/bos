@@ -18,9 +18,12 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
       </el-form-item>
+			<div class="export">
+			     <el-button @click="exportExcel" style="margin-top: 2px;" size="medium" type="success">导出</el-button>
+			</div>
     </el-form>
     <!--数据表格-->
-    <el-table :data="result" style="width: 100%;" :border="true" max-height="550">
+    <el-table :data="result" style="width: 100%;" :border="true" max-height="550" id="pac">
       <el-table-column prop="id" label="序号" min-width="30" align="center"></el-table-column>
       <el-table-column prop="workint" label="工作单号" min-width="40"></el-table-column>
       <el-table-column prop="warename" label="品名" min-width="50"></el-table-column>
@@ -40,6 +43,8 @@
 <script>
   import axios from 'axios'
   import qs from 'qs'
+  import FileSaver from 'file-saver'
+  import XLSX from 'xlsx'
   export default {
     name: 'Packagingquery',
     data: function() {
@@ -52,6 +57,22 @@
 		}	
     },
     methods: {
+		exportExcel () {
+		                /* generate workbook object from table */
+		                let wb = XLSX.utils.table_to_book(document.querySelector('#pac'));
+		                /* get binary string as output */
+		                let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' });
+		                try {
+		                    FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '包装材料查询.xlsx');
+		                } catch (e)
+		                {
+		                    if (typeof console !== 'undefined')
+		                        console.log(e, wbout)
+		                }
+		                return wbout
+		 },
+		
+		
 		
 		query: function() {
 

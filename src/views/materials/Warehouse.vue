@@ -10,10 +10,17 @@
     <el-form :inline="true" class="demo-form-inline" style="margin-top: 10px;">
       <!-- v-for="c1 in oneColumn" -->
       <el-form-item label="出库单号" ><!--v-for="c in oneColumn"  -->
-        <el-input v-model="column" placeholder="请输入入库单号"></el-input>
+        <el-input v-model="column" placeholder="请输入出库单号"></el-input>
       </el-form-item>
       <el-form-item label="出库类型">
-        <el-input v-model="columnName" placeholder="请输入入库类型"></el-input>
+        <template>
+          <el-select v-model="columnName" placeholder="请选择出库类型">
+           <el-option value="1" label="初期入库"></el-option>
+           <el-option value="2" label="调拨入库"></el-option>
+           <el-option value="3" label="下发入库"></el-option>
+           <el-option value="4" label="盘盈调整"></el-option>
+          </el-select>
+        </template>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
@@ -27,7 +34,14 @@
     <el-table :data="result" style="width: 100%;" :border="true" max-height="550">
       <el-table-column prop="id" label="序号" min-width="30" align="center"></el-table-column>
       <el-table-column prop="outboundno" label="出库单号" min-width="40"></el-table-column>
-      <el-table-column prop="outboundtype" label="出库类型" min-width="50"></el-table-column>
+      <el-table-column prop="outboundtype" label="出库类型" min-width="50">
+				<template slot-scope="scope1">
+				     <span v-if="scope1.row.outboundtype==1">初期入库</span>
+				     <span v-if="scope1.row.outboundtype==2">调拨入库</span>
+					 <span v-if="scope1.row.outboundtype==3">下发入库</span>
+					 <span v-if="scope1.row.outboundtype==4">盘盈调整</span>
+				  </template>
+			</el-table-column>
       <el-table-column prop="transport" label="运输单号" min-width="70"></el-table-column>
       <el-table-column prop="subordinateunit" label="所属单位" min-width="70"></el-table-column>
       <el-table-column prop="issuedunit" label="下发单位" min-width="70"></el-table-column>
@@ -47,7 +61,7 @@
 
  
 
-   <el-dialog title="外层查询" :visible.sync="outerVisible" width="800px">
+   <el-dialog title="明细" :visible.sync="outerVisible" width="800px">
 	   <el-button type="primary" @click="add1">新增</el-button>
 	    
 	   
@@ -59,7 +73,14 @@
 	   <el-table-column property="actualnum" label="实际数量"></el-table-column>
 	   <el-table-column property="plannedprice" label="计划价格"></el-table-column>
 	   <el-table-column property="specifications" label="规格"></el-table-column>
-	   <el-table-column property="type" label="类型"></el-table-column>
+	   <el-table-column property="type" label="类型">
+		   <template slot-scope="scope1">
+		        <span v-if="scope1.row.type==1">初期入库</span>
+		        <span v-if="scope1.row.type==2">调拨入库</span>
+		   	 <span v-if="scope1.row.type==3">下发入库</span>
+		   	 <span v-if="scope1.row.type==4">盘盈调整</span>
+		     </template>
+	   </el-table-column>
 	     <el-table-column label="操作">
 	   <template slot-scope="scope1">
 	   	<!-- -->
@@ -81,7 +102,15 @@
           <el-input v-model="columnForm.outboundno" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="出库类型" prop="outboundtype" :label-width="formLabelWidth">
-          <el-input v-model="columnForm.outboundtype" autocomplete="off"></el-input>
+         <!-- <el-input v-model="columnForm.outboundtype" autocomplete="off"></el-input> -->
+		  <template>
+		    <el-select v-model="columnForm.outboundtype" placeholder="请选择出库类型">
+		     <el-option value="1" label="初期入库"></el-option>
+		     <el-option value="2" label="调拨入库"></el-option>
+		     <el-option value="3" label="下发入库"></el-option>
+		     <el-option value="4" label="盘盈调整"></el-option>
+		    </el-select>
+		  </template>
         </el-form-item>
         <el-form-item label="运输单号" prop="transport" :label-width="formLabelWidth">
           <el-input v-model="columnForm.transport" autocomplete="off"></el-input>
@@ -144,29 +173,43 @@
         <el-form-item label="序号" :label-width="formLabelWidth" v-show="false">
           <el-input v-model="gData.id" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="货物编码" prop="reservoirtype" :label-width="formLabelWidth">
+        <el-form-item label="货物编码" prop="goodscode" :label-width="formLabelWidth">
           <el-input v-model="gData.goodscode" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="货物名称" prop="transport" :label-width="formLabelWidth">
+        <el-form-item label="货物名称" prop="goodsname" :label-width="formLabelWidth">
           <el-input v-model="gData.goodsname" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="入库数量" prop="subordinateunit" :label-width="formLabelWidth">
+        <el-form-item label="入库数量" prop="storagenum" :label-width="formLabelWidth">
           <el-input v-model="gData.storagenum" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="实际数量" prop="drawerno" :label-width="formLabelWidth">
+        <el-form-item label="实际数量" prop="actualnum" :label-width="formLabelWidth">
           <el-input v-model="gData.actualnum" autocomplete="off"></el-input>
         </el-form-item>
-		<el-form-item label="计划价格" prop="drawername" :label-width="formLabelWidth">
+		<el-form-item label="计划价格" prop="plannedprice" :label-width="formLabelWidth">
 		  <el-input v-model="gData.plannedprice" autocomplete="off"></el-input>
 		</el-form-item>
-		<el-form-item label="规模" prop="drawername" :label-width="formLabelWidth">
+		<el-form-item label="规模" prop="specifications" :label-width="formLabelWidth">
 		  <el-input v-model="gData.specifications" autocomplete="off"></el-input>
 		</el-form-item>
-		<el-form-item label="类型" prop="drawername" :label-width="formLabelWidth">
-		  <el-input v-model="gData.type" autocomplete="off"></el-input>
+		<el-form-item label="类型" prop="type" :label-width="formLabelWidth">
+		  <!-- <el-input v-model="gData.type" autocomplete="off"></el-input> -->
+		  <template>
+		    <el-select v-model="gData.type" placeholder="请选择入库类型">
+		     <el-option value="1" label="初期入库"></el-option>
+		     <el-option value="2" label="调拨入库"></el-option>
+		     <el-option value="3" label="下发入库"></el-option>
+		     <el-option value="4" label="盘盈调整"></el-option>
+		    </el-select>
+		  </template>
 		</el-form-item>
-		<el-form-item label="状态" prop="remark" :label-width="formLabelWidth">
-		  <el-input v-model="gData.status" autocomplete="off"></el-input>
+		<el-form-item label="状态" prop="status" :label-width="formLabelWidth">
+		 <!-- <el-input v-model="gData.status" autocomplete="off"></el-input> -->
+		 <template>
+		   <el-select v-model="gData.status" placeholder="请选择状态" autocomplete="off">
+		    <el-option value="1" label="正常"></el-option>
+		    <el-option value="-1" label="作废"></el-option>
+		   </el-select>
+		 </template>
 		</el-form-item>
       </el-form>
 	  
@@ -331,12 +374,11 @@
       onSubmit: function() { 
 		  
       let pages = {
-        warehouseno:this.column,
-		reservoirtype:this.columnName
+        outboundno:this.column,
+		outboundtype:this.columnName
       }
-		alert(pages.column)
-		alert(pages.columnName)
-      let urll = 'http://localhost/wuliuxm/selectPacStockname';
+	
+      let urll = 'http://localhost/wuliuxm/selectPacStockcmhc';
       axios.post(urll, qs.stringify(pages)).then(resp => {
         console.log(resp.data);
 		this.result = resp.data;

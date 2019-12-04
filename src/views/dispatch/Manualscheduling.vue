@@ -18,42 +18,13 @@
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-        <el-button @click="moreGet">更多</el-button>
-      </el-form-item>
-      <br>
-      <el-form-item v-show="ok" label="来源类型">
-        <el-select v-model="value" placeholder="请选择" style="width: 100px;">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok" label="日期">
-        <el-input v-model="ss" placeholder="请输入日期" style="width: 150px;"></el-input>
-      </el-form-item>
-      <el-form-item v-show="ok" label="是否超时">
-        <el-select v-model="value" placeholder="请选择" style="width: 100px;">
-          <el-option v-for="item in istf" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item v-show="ok" label="是否异常">
-        <el-select v-model="value" placeholder="请选择" style="width: 100px;">
-          <el-option v-for="item in istf" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
       </el-form-item>
     </el-form>
-
-    <el-row style="text-align: left;;">
-      <el-button type="primary" @click="dialogFormVisible = true">分配</el-button>
-      <el-button type="primary">退回</el-button>
-      <el-button type="primary">销单</el-button>
-    </el-row>
-    <!--转单的弹框 -->
+    <!--分配的弹框 -->
     <el-dialog title="分配" :visible.sync="dialogFormVisible" style="width: 500px;">
-      <el-form :model="form">
-        <el-form-item label="所属单位" :label-width="formLabelWidth">
-          <el-select v-model="processingunit" placeholder="请选择"">
+      <el-form>
+        <el-form-item label="取件单位" :label-width="formLabelWidth">
+          <el-select v-model="pickupunit" placeholder="请选择"">
              <el-option
                v-for=" item in
             options" :key="item.id" :label="item.name" :value="item.id">
@@ -71,7 +42,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="qdSubmit">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -94,7 +65,7 @@
       </el-table-column>
       <el-table-column prop="linkman" label="联系人" width="80">
       </el-table-column>
-      <el-table-column prop="telphone" label="电话" width="100">
+      <el-table-column prop="telphone" label="电话" width="80">
       </el-table-column>
       <el-table-column prop="weight" label="重量" width="80">
       </el-table-column>
@@ -104,8 +75,10 @@
       </el-table-column>
       <el-table-column prop="arrivecity" label="到达城市" width="80">
       </el-table-column>
-	  <el-table-column label="操作" width="70">
+	  <el-table-column label="操作" width="250">
 	    <template slot-scope="scope">
+        <el-button size="mini" type="success" @click="fpOrder(scope.row)">分配</el-button>
+        <el-button size="mini" type="success" @click="xdClick(scope.row)">销单</el-button>
 	      <el-button size="mini" type="success" @click="handleDetail(scope.row)">详情</el-button>
 	    </template>
 	  </el-table-column>
@@ -187,20 +160,13 @@
         form: {
           name: '',
           region: ''
-
         },
         dialogFormVisible: false,
         total: 10,
         pages: 1,
         rows: 5,
         radio: 3,
-        ww: '',
-        ss: '',
-        qq: '',
-        zrmb: '',
-        cc: '',
         options: [],
-        ok: false,
         fjbm:[],
         Returnapplication:{
           businessnoticeno:null,
@@ -243,15 +209,15 @@
           reason:null
 
         },
-         activeName: 'first'
+         activeName: 'first',
+         id:0,
+         sortingcode:null,
+         pickupunit:null
 
 
       }
     },
     methods: {
-      handleClick: function() { /* 查看详情 */
-
-      },
       onSubmit: function() {
         let fy = {
           pages: this.pages,
@@ -271,9 +237,6 @@
       },
       resetForm: function(formName) {
         this.$refs[formName].resetFields();
-      },
-      moreGet: function() {
-        this.ok = !this.ok;
       },
       handleCurrentChange: function(pages) {
         this.pages=pages;
@@ -379,7 +342,47 @@
                     this.DdHistory.remark=row.disDispatchhistory.remark;
                      this.DdHistory.reason=row.disDispatchhistory.reason;
 
-      }
+      },
+      fpOrder:function(rows){
+        this.dialogFormVisible=true;
+        this.id=rows.id;
+        this.sortingcode=rows.sortingcode;
+        this.pickupunit=rows.pickupunit;
+      },
+      qdSubmit:function(){
+        let fy = {
+          id: this.id,
+          sortingcode:this.sortingcode,
+          pickupunit:this.pickupunit
+        }
+        var str = qs.stringify(fy);
+        let url = "http://localhost/wuliuxm/updateSortingCodeByidFpHlp"
+        axios.post(url, str).then(response => {
+          this.onSubmit();
+          this.dialogFormVisible=false;
+        }).catch(error => {
+          console.log('erro')
+        });
+
+
+        },
+        xdClick:function(rows){
+          this.id=rows.id;
+          let fy = {
+            id: this.id,
+          }
+          var str = qs.stringify(fy);
+          let url = "http://localhost/wuliuxm/updateXdHlp"
+          axios.post(url, str).then(response => {
+            this.dialogFormVisible=false;
+            this.onSubmit();
+          }).catch(error => {
+            console.log('erro')
+          });
+
+        }
+
+
 
     },
     //钩子函数

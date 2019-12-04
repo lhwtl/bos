@@ -1,5 +1,5 @@
 <template>
-	<el-menu class="el-menu-demo" mode="horizontal" background-color="#334157" text-color="#fff" active-text-color="#fff">
+	<el-menu class="el-menu-demo" mode="horizontal" background-color="#DCDFE6" text-color="#606266" active-text-color="#fff">
 		<el-button class="buttonimg">
 			<img class="showimg" :src="collapsed?imgshow:imgsq" @click="doToggle()">
 		</el-button>

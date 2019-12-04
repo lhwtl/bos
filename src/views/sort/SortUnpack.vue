@@ -1,5 +1,10 @@
 <template>
-  <div class="divClass">
+  <div class="divClass" v-loading="loading"
+    element-loading-text="此页面正在维护当中请联系管理员999"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+    :data="tableData"
+    style="width: 100%">
     <!--面包屑-->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
@@ -128,6 +133,102 @@
             <el-input v-model="EmpPoolForm" placeholder="配载要求" :readonly="true" ></el-input>
           </td>
         </tr>
+        <tr>
+          <td><label style="padding:0px;font-size: 14px;">调节号</label></td>
+          <td><label style="padding:0px;font-size: 14px;">品名</label></td>
+          <td><label style="padding:0px;font-size: 14px;">到达地</label></td>
+          <td><label style="padding:0px;font-size: 14px;">票数</label></td>
+          <td><label style="padding:0px;font-size: 14px;">件数</label></td>
+          <td><label style="padding:0px;font-size: 14px;">实际件数</label></td>
+          <td><label style="padding:0px;font-size: 14px;">重量</label></td>
+          <td><label style="padding:0px;font-size: 14px;">体积</label></td>
+          <td><label style="padding:0px;font-size: 14px;">到达时限</label></td>
+          <td><label style="padding:0px;font-size: 14px;">重要提示</label></td>
+          <td><label style="padding:0px;font-size: 14px;">配载要求</label></td>
+        </tr>
+        <tr>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="调节号" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="品名" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="到达地" :readonly="true"></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="票数" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="件数" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="实际件数" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="重量" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="体积" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="到达时限" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="重要提示" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="配载要求" :readonly="true" ></el-input>
+          </td>
+        </tr>
+        <tr>
+          <td><label style="padding:0px;font-size: 14px;">调节号</label></td>
+          <td><label style="padding:0px;font-size: 14px;">品名</label></td>
+          <td><label style="padding:0px;font-size: 14px;">到达地</label></td>
+          <td><label style="padding:0px;font-size: 14px;">票数</label></td>
+          <td><label style="padding:0px;font-size: 14px;">件数</label></td>
+          <td><label style="padding:0px;font-size: 14px;">实际件数</label></td>
+          <td><label style="padding:0px;font-size: 14px;">重量</label></td>
+          <td><label style="padding:0px;font-size: 14px;">体积</label></td>
+          <td><label style="padding:0px;font-size: 14px;">到达时限</label></td>
+          <td><label style="padding:0px;font-size: 14px;">重要提示</label></td>
+          <td><label style="padding:0px;font-size: 14px;">配载要求</label></td>
+        </tr>
+        <tr>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="调节号" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="品名" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="到达地" :readonly="true"></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="票数" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="件数" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="实际件数" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="重量" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="体积" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="到达时限" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="重要提示" :readonly="true" ></el-input>
+          </td>
+          <td>
+            <el-input v-model="EmpPoolForm" placeholder="配载要求" :readonly="true" ></el-input>
+          </td>
+        </tr>
       </table>
     </el-form>
 
@@ -144,6 +245,7 @@
     name: 'SortUnpack',
     data: function() {
       return {
+         loading: true,
         navigation1: null, //导航栏查询。。
         navigation2: null, //导航栏查询查询。。
         result: [], //主显示集合

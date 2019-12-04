@@ -42,7 +42,7 @@
    <el-dialog :title="title" :visible.sync="dialogFormVisible">
       <el-form :model="UnitForm" ref="UnitForm" :rules="rules">
         <el-form-item label="编号" :label-width="formLabelWidth" v-show="false">
-          <el-input v-model="BasDeliverystandardForm.id" autocomplete="off"></el-input>
+          <el-input v-model="UnitForm.id" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="单位名称" prop="name" :label-width="formLabelWidth">
           <el-input v-model="UnitForm.name" autocomplete="off"></el-input>

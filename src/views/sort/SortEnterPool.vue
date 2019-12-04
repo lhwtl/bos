@@ -502,11 +502,11 @@
           let pages = {
             unid:r,
            }
-           let url = 'http://localhost/wuliuxm/FillSyUnitsByidLx';
+           let url = 'http://localhost/wuliuxm/FillSyEmpByidLx';
              axios.post(url,qs.stringify(pages)).then(resp => {
                console.log(resp.data);
-               console.log(resp.data.name);
-               this.EmpPoolForm.acceptcompany = resp.data.name;
+               console.log(resp.data.syUnits.name);
+               this.EmpPoolForm.acceptcompany = resp.data.syUnits.name;
              }).catch(error => {
                console.log(error);
              });
@@ -515,11 +515,11 @@
           let pages = {
               unid:r,
            }
-           let url = 'http://localhost/wuliuxm/FillSyUnitsByidLx';
+           let url = 'http://localhost/wuliuxm/FillSyEmpByidLx';
            axios.post(url,qs.stringify(pages)).then(resp => {
-               console.log(resp.data);
-               console.log(resp.data.name);
-               this.EmpPoolForm.deliverycompany = resp.data.name;
+                console.log(resp.data)
+               console.log(resp.data.syUnits.name);
+               this.EmpPoolForm.deliverycompany = resp.data.syUnits.name;
              }).catch(error => {
                console.log(error);
              });

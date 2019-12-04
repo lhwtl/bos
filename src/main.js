@@ -5,13 +5,15 @@ import Vue from 'vue'
 import 'element-ui/lib/theme-chalk/index.css' //新添加2，避免后期打包样式不同，
 import App from './App'
 import router from './router'
-import VueCookies from 'vue-cookies'
+//import VueCookies from 'vue-cookies'
 import VueSession from 'vue-session'
 import global_ from './components/Login'//引用文件
 //import global_ from './components/Global'//引用文件
-Vue.prototype.GLOBAL = global_//挂载到Vue实例上面复制代码
+//Vue.prototype.GLOBAL = global_//挂载到Vue实例上面复制代码
+import fileSaver from 'file-saver'
+import xlsx from 'xlsx'
 Vue.use(VueSession)
-Vue.use(VueCookies);
+//Vue.use(VueCookies)
 
 //process.env.MOCK && require('@/mock')  //测试模式
 

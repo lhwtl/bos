@@ -41,6 +41,14 @@
           empno: this.empno,
           pwd: this.pwd
         }
+        let urls = 'http://localhost/wuliuxm/selectSyEmpByempnoHlp';
+        axios.post(urls, qs.stringify(params)).then(resp => {
+          console.log(resp.data);
+           this.$session.set("emplistkey",resp.data);
+
+        }).catch(error => {
+          console.log(error);
+        });
         console.log(params)
         //  阿贾克斯  GET提交
         var url="http://localhost/wuliuxm/LoginSyEmp";

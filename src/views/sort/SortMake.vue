@@ -3,7 +3,7 @@
     <!--面包屑-->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/Home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a>入库管理</a></el-breadcrumb-item>
+      <el-breadcrumb-item><a>盘库管理</a></el-breadcrumb-item>
     </el-breadcrumb>
     <!--搜索框-->
 
@@ -413,11 +413,11 @@
         let pages = {
           unid: r,
         }
-        let url = 'http://localhost/wuliuxm/FillSyUnitsByidLx';
+        let url = 'http://localhost/wuliuxm/FillSyEmpByidLx';
         axios.post(url, qs.stringify(pages)).then(resp => {
           console.log(resp.data);
-          console.log(resp.data.name);
-          this.RoleForm.checkcompany = resp.data.name;
+          console.log(resp.data.syUnits.name);
+          this.RoleForm.checkcompany = resp.data.syUnits.name;
           /* this.cys=resp.data.id; */
         }).catch(error => {
           console.log(error);

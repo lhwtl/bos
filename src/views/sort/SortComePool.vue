@@ -579,11 +579,11 @@
           let pages = {
             unid:r,
            }
-           let url = 'http://localhost/wuliuxm/FillSyUnitsByidLx';
+           let url = 'http://localhost/wuliuxm/FillSyEmpByidLx';/*  */
              axios.post(url,qs.stringify(pages)).then(resp => {
                console.log(resp.data);
-               console.log(resp.data.name);
-               this.EmpPoolForm.direction = resp.data.name;
+               console.log(resp.data.syUnits.name);
+               this.EmpPoolForm.direction = resp.data.syUnits.name;
                this.wlfx=resp.data.id;
              }).catch(error => {
                console.log(error);
@@ -594,11 +594,11 @@
           let pages = {
             unid:r,
            }
-           let url = 'http://localhost/wuliuxm/FillSyUnitsByidLx';
+           let url = 'http://localhost/wuliuxm/FillSyEmpByidLx';
              axios.post(url,qs.stringify(pages)).then(resp => {
                console.log(resp.data);
-               console.log(resp.data.name);
-               this.EmpPoolForm.carriers = resp.data.name;
+               console.log(resp.data.syUnits.name);
+               this.EmpPoolForm.carriers = resp.data.syUnits.name;
                this.cys=resp.data.id;
              }).catch(error => {
                console.log(error);
@@ -608,11 +608,11 @@
           let pages = {
               unid:r,
            }
-           let url = 'http://localhost/wuliuxm/FillSyUnitsByidLx';
+           let url = 'http://localhost/wuliuxm/FillSyEmpByidLx';
            axios.post(url,qs.stringify(pages)).then(resp => {
                console.log(resp.data);
-               console.log(resp.data.name);
-               this.EmpPoolForm.deliverycompany = resp.data.name;
+               console.log(resp.data.syUnits.name);
+               this.EmpPoolForm.deliverycompany = resp.data.syUnits.name;
                 this.chdw=resp.data.id;
              }).catch(error => {
                console.log(error);
@@ -637,7 +637,7 @@
     /* 初始化 */
       created: function() {
       this.query();
-      /* 员工下拉*/
+      /* 员工下拉*//* 查询数据转换 */
       let url = 'http://localhost/wuliuxm/FillAllSyEmpLx';
        axios.post(url,null).then(resp => {
            console.log(resp.data);
